@@ -20,6 +20,12 @@ def display_sum(values) -> Decimal:
     return sum((rounded(value) for value in values), ZERO)
 
 
+def rate_text(profit: Decimal, investment: Decimal) -> str:
+    if not investment:
+        return "收益率不可计算"
+    return f"收益率 {profit / investment:.2%}"
+
+
 def security_values(security) -> list:
     known = security.cost_known
     return [
@@ -38,14 +44,20 @@ def show_overview(console, report, totals, incomplete) -> None:
     fees = sum(report.fees.values(), ZERO)
     stamp = report.fees["印花税"]
     share = f"占交易手续费 {stamp / fees:.2%}" if fees else "无交易手续费"
+    transfer_total = totals[-1]
+    investment = report.inflow - report.outflow + transfer_total
+    profit = totals[0] + rounded(report.interest)
+    profit_note = rate_text(profit, investment)
+    if incomplete:
+        profit_note = f"收益不完整；{profit_note}"
     rows = [
         ("银行流入", report.inflow, ""),
         ("银行流出", report.outflow, ""),
         ("现金净投入", report.inflow - report.outflow, "仅银行转账"),
         (
             "已实现净收益",
-            totals[0] + rounded(report.interest),
-            "收益不完整" if incomplete else "",
+            profit,
+            profit_note,
         ),
         ("    其中：资金利息", report.interest, ""),
         ("交易手续费合计", totals[1], "不再次扣减"),
@@ -65,7 +77,8 @@ def show_overview(console, report, totals, incomplete) -> None:
     if any(s.transfer_count for s in report.securities.values()):
         missing = any(not s.transfer_known for s in report.securities.values())
         rows.insert(3, ("托管净转入", totals[-1], "成交金额缺失，仅合计已知项" if missing else "转入为正，转出为负"))
-        rows.insert(4, ("账户净投入", report.inflow - report.outflow + totals[-1], "不完整" if missing else ""))
+        investment = report.inflow - report.outflow + transfer_total
+        rows.insert(4, ("账户净投入", investment, "不完整" if missing else ""))
     show_notes = any(note for _, _, note in rows)
     table = Table("项目", "金额（元）", *(["备注"] if show_notes else []))
     for label, amount, note in rows:
