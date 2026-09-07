@@ -7,8 +7,9 @@ from datetime import date
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
 
+from .platforms import FEE_COLUMNS, PLATFORMS, Platform, decimal, identify_platform
+
 ZERO = Decimal(0)
-FEE_COLUMNS = ("印花税", "佣金", "经手费", "证管费", "结算费", "过户费", "其他费用")
 
 
 @dataclass
@@ -22,7 +23,9 @@ class Entry:
     serial: str
     line: int
     fees: dict[str, Decimal]
-    platform: str
+    platform: Platform
+    trade_amount: Decimal | None
+    trade_price: Decimal | None
     time: str = ""
 
 
@@ -37,7 +40,7 @@ def read_entries(path: Path) -> list[Entry]:
         (
             i
             for i, line in enumerate(lines)
-            if line.lstrip().startswith(("成交日期", "交收日期"))
+            if line.lstrip().startswith(tuple(p.header_start for p in PLATFORMS))
         ),
         None,
     )
@@ -50,24 +53,15 @@ def read_entries(path: Path) -> list[Entry]:
     columns = [
         (m.group().decode("gb18030"), m.start()) for m in re.finditer(rb"\S+", header)
     ]
-    eastmoney = "交易类别" in {name for name, _ in columns}
-    platform = "东方财富证券" if eastmoney else "招商证券"
-    required = {"证券代码", "证券名称", "成交数量", "发生金额", "流水号", "币种"}
-    required |= (
-        {"交收日期", "发生日期", "发生时间", "交易类别", "佣金", "其他费用", "印花税", "过户费"}
-        if eastmoney
-        else {"成交日期", "业务名称", *FEE_COLUMNS}
-    )
-    if missing := required - {name for name, _ in columns}:
-        raise ValueError(f"缺少列：{'、'.join(sorted(missing))}")
+    platform = identify_platform({name for name, _ in columns})
     entries = []
     for number, line in enumerate(lines[header_index + 1 :], header_index + 2):
         if not line.strip() or set(line.strip()) <= {"-", "="}:
             continue
         values = split_columns(line, columns)
         try:
-            if eastmoney:
-                values = normalize_eastmoney(values)
+            values = platform.normalize(values)
+            quantity, trade_amount, trade_price = platform.trade_values(values)
             validate_date(values["成交日期"])
             if values["币种"] != "人民币":
                 raise ValueError("仅支持人民币，不能合计不同币种")
@@ -77,12 +71,14 @@ def read_entries(path: Path) -> list[Entry]:
                     values["业务名称"],
                     values["证券代码"],
                     values["证券名称"],
-                    decimal(values["成交数量"]),
+                    quantity,
                     decimal(values["发生金额"]),
                     values["流水号"],
                     number,
                     {name: decimal(values[name]) for name in FEE_COLUMNS},
                     platform,
+                    trade_amount,
+                    trade_price,
                     values.get("发生时间", ""),
                 )
             )
@@ -104,28 +100,6 @@ def entry_sort_key(entry: Entry) -> tuple:
     return entry.date, entry.time, serial, entry.line
 
 
-def normalize_eastmoney(values: dict[str, str]) -> dict[str, str]:
-    values = {key: "" if value == "--" else value for key, value in values.items()}
-    values["成交日期"] = values["发生日期"].replace("-", "")
-    aliases = {
-        "银行转证券": "银行转存",
-        "证券转银行": "银行转取",
-        "融券回购": "质押回购拆出",
-        "融券购回": "拆出质押购回",
-        "转托管入": "转托转入",
-    }
-    values["业务名称"] = aliases.get(values["交易类别"], values["交易类别"])
-    if values["业务名称"] == "拆出质押购回":
-        values["成交日期"] = values["交收日期"].replace("-", "")
-        # 购回的发生时间是导出标记，不代表交收日的实际入账时刻。
-        values["发生时间"] = ""
-    if values["业务名称"] in {"证券卖出", "拆出质押购回"}:
-        values["成交数量"] = str(-abs(decimal(values["成交数量"])))
-    for name in FEE_COLUMNS:
-        values.setdefault(name, "0")
-    return values
-
-
 def split_columns(line: str, columns: list[tuple[str, int]]) -> dict[str, str]:
     data = line.encode("gb18030")
     result = {}
@@ -135,13 +109,6 @@ def split_columns(line: str, columns: list[tuple[str, int]]) -> dict[str, str]:
     return result
 
 
-def decimal(value: str) -> Decimal:
-    number = Decimal(value.replace(",", ""))
-    if not number.is_finite():
-        raise ValueError("金额或数量不是有限数值")
-    return number
-
-
 @dataclass
 class Security:
     name: str = ""
@@ -149,7 +116,9 @@ class Security:
     cost: Decimal = ZERO
     realized: Decimal = ZERO
     distributions: Decimal = ZERO
-    transfer_cost: Decimal = ZERO
+    transfer_net: Decimal = ZERO
+    transfer_count: int = 0
+    transfer_known: bool = True
     repo_principal: Decimal = ZERO
     repo_quantity: Decimal = ZERO
     cost_known: bool = True
@@ -190,14 +159,6 @@ def remove_cost(security: Security, quantity: Decimal, entry: Entry) -> Decimal:
     return cost
 
 
-def repo_quantity_unit(stock_code: str) -> Decimal:
-    if stock_code.startswith("204"):
-        return Decimal(1000)
-    if stock_code.startswith("1318"):
-        return Decimal(100)
-    raise ValueError(f"不支持的逆回购证券代码：{stock_code}")
-
-
 def apply_security(security: Security, entry: Entry) -> bool:
     business, amount = entry.business, entry.amount
     if business == "证券买入":
@@ -209,11 +170,8 @@ def apply_security(security: Security, entry: Entry) -> bool:
     elif business == "证券卖出":
         security.realized += amount - remove_cost(security, -entry.quantity, entry)
         security.trades += 1
-    elif business == "转托转出":
-        security.transfer_cost += remove_cost(security, -entry.quantity, entry)
-    elif business == "转托转入":
-        security.quantity += entry.quantity
-        security.cost_known = False
+    elif business in {"转托转出", "转托转入"}:
+        apply_transfer(security, entry)
     elif business in {"股息入账", "股息红利税补缴"}:
         security.distributions += amount
     elif business == "质押回购拆出":
@@ -229,11 +187,7 @@ def apply_security(security: Security, entry: Entry) -> bool:
     elif business == "拆出质押购回":
         if not entry.stock_code.startswith(("204", "1318")):
             return False
-        unit = (
-            Decimal(100)
-            if entry.platform == "东方财富证券"
-            else repo_quantity_unit(entry.stock_code)
-        )
+        unit = entry.platform.repo_quantity_unit(entry.stock_code)
         principal = abs(entry.quantity) * unit
         if principal > security.repo_principal:
             raise ValueError(
@@ -245,6 +199,29 @@ def apply_security(security: Security, entry: Entry) -> bool:
     else:
         return False
     return True
+
+
+def apply_transfer(security: Security, entry: Entry) -> None:
+    incoming = entry.business == "转托转入"
+    quantity = abs(entry.quantity)
+    if quantity == 0:
+        raise ValueError(f"第 {entry.line} 行托管转移数量为零")
+    security.transfer_count += 1
+    removed = ZERO
+    if incoming:
+        security.quantity += quantity
+    else:
+        removed = remove_cost(security, quantity, entry)
+    if entry.trade_amount is None:
+        security.transfer_known = False
+        security.cost_known = False
+        return
+    value = abs(entry.trade_amount)
+    security.transfer_net += value if incoming else -value
+    if incoming:
+        security.cost += value
+    else:
+        security.realized += value - removed
 
 
 def analyze(entries: list[Entry]) -> Report:
