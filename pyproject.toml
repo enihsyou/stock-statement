@@ -1,0 +1,19 @@
+[project]
+name = "stock-statement"
+version = "0.1.0"
+description = "招商证券资金流水历史收益分析"
+readme = "README.md"
+authors = [
+    { name = "九条涼果", email = "enihsyou@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "rich>=15.0.0",
+]
+
+[project.scripts]
+stock-statement = "stock_statement:main"
+
+[build-system]
+requires = ["uv_build>=0.12.8,<0.13.0"]
+build-backend = "uv_build"
