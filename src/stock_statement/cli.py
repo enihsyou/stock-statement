@@ -5,7 +5,7 @@ from pathlib import Path
 from rich.console import Console
 from rich.table import Table
 
-from .ledger import FEE_COLUMNS, ZERO, analyze, read_entries
+from .ledger import FEE_COLUMNS, ZERO, analyze, read_files
 
 
 def rounded(value: Decimal) -> Decimal:
@@ -183,11 +183,12 @@ def report_rows(report):
 
 def show_unknown(console, entries) -> None:
     table = Table(title="待确认流水：未纳入收益与净投入，报告不完整")
-    for title in ("文件行号", "日期", "业务", "代码", "数量", "金额"):
+    for title in ("来源", "平台", "日期", "业务", "代码", "数量", "金额"):
         table.add_column(title)
     for entry in entries:
         table.add_row(
-            str(entry.line),
+            entry.location,
+            entry.platform.name,
             entry.date,
             entry.business,
             entry.stock_code,
@@ -200,7 +201,7 @@ def show_unknown(console, entries) -> None:
 def earnings(args: argparse.Namespace) -> None:
     console = Console()
     try:
-        entries = read_entries(args.file)
+        entries, duplicates = read_files(args.files)
         report = analyze(entries)
     except (OSError, ValueError, UnicodeError) as exc:
         console.print(f"无法生成报告：{exc}", style="red", markup=False)
@@ -209,10 +210,14 @@ def earnings(args: argparse.Namespace) -> None:
     incomplete = bool(report.unknown) or any(
         not s.cost_known for s in report.securities.values()
     )
+    platforms = {entry.platform.name: entry.platform for entry in entries}
+    platform_names = "、".join(platforms)
     console.print(
-        f"历史收益 · {entries[0].platform.name} · {entries[0].date}—{entries[-1].date} · {len(entries)} 条流水",
+        f"历史收益 · {platform_names} · {entries[0].date}—{entries[-1].date} · {len(entries)} 条流水 · {len(args.files)} 个文件",
         markup=False,
     )
+    if duplicates:
+        console.print(f"已去除跨文件重复流水 {duplicates} 条。")
     show_overview(console, report, totals, incomplete)
     show_securities(console, rows, totals, any(s.transfer_count for s in report.securities.values()))
     console.print(
@@ -224,7 +229,9 @@ def earnings(args: argparse.Namespace) -> None:
     console.print(
         "现金净投入只含银行转账；账户净投入另含托管净转入。托管按成交金额计价，转出金额与持仓成本之差计入账户收益。交易笔数统计买入、卖出和逆回购拆出记录。"
     )
-    for note in entries[0].platform.notes:
+    if len(platforms) > 1:
+        console.print("各平台分别核算后按证券汇总；托管转移按各账户记录金额计价，跨平台转移不另作抵消。")
+    for note in dict.fromkeys(note for platform in platforms.values() for note in platform.notes):
         console.print(note)
     if report.unknown:
         show_unknown(console, report.unknown)
@@ -241,9 +248,10 @@ def main() -> None:
     commands = parser.add_subparsers(dest="command", required=True)
     command = commands.add_parser("earnings", help="展示净投入、已实现收益与交易手续费")
     command.add_argument(
-        "file",
+        "files",
+        nargs="+",
         type=Path,
-        help="招商资金流水或东方财富交割单（优先 GB18030，失败后 UTF-8）",
+        help="一个或多个招商资金流水、东方财富交割单，可混合平台（优先 GB18030，失败后 UTF-8）",
     )
     command.set_defaults(func=earnings)
     args = parser.parse_args()

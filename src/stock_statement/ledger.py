@@ -27,6 +27,11 @@ class Entry:
     trade_amount: Decimal | None
     trade_price: Decimal | None
     time: str = ""
+    source: str = ""
+
+    @property
+    def location(self) -> str:
+        return f"{self.source} 第 {self.line} 行"
 
 
 def read_entries(path: Path) -> list[Entry]:
@@ -80,6 +85,7 @@ def read_entries(path: Path) -> list[Entry]:
                     trade_amount,
                     trade_price,
                     values.get("发生时间", ""),
+                    str(path),
                 )
             )
         except (ValueError, InvalidOperation) as exc:
@@ -87,6 +93,35 @@ def read_entries(path: Path) -> list[Entry]:
     if not entries:
         raise ValueError("文件没有流水记录")
     return sorted(entries, key=entry_sort_key)
+
+
+def entry_identity(entry: Entry) -> tuple:
+    return (
+        entry.platform.name, entry.date, entry.time, entry.serial,
+        entry.business, entry.stock_code, entry.quantity, entry.amount,
+        entry.trade_amount, entry.trade_price, tuple(sorted(entry.fees.items())),
+    )
+
+
+def read_files(paths: list[Path]) -> tuple[list[Entry], int]:
+    entries = []
+    seen = Counter()
+    duplicates = 0
+    for path in paths:
+        try:
+            batch = read_entries(path)
+        except (ValueError, UnicodeError) as exc:
+            raise ValueError(f"{path}：{exc}") from exc
+        occurrences = Counter()
+        for entry in batch:
+            key = entry_identity(entry)
+            occurrences[key] += 1
+            if occurrences[key] <= seen[key]:
+                duplicates += 1
+            else:
+                entries.append(entry)
+        seen |= occurrences
+    return sorted(entries, key=entry_sort_key), duplicates
 
 
 def validate_date(value: str) -> None:
@@ -146,7 +181,7 @@ class Report:
 def remove_cost(security: Security, quantity: Decimal, entry: Entry) -> Decimal:
     if quantity <= 0 or quantity > security.quantity:
         raise ValueError(
-            f"第 {entry.line} 行 {entry.stock_code} 数量无法匹配历史持仓"
+            f"{entry.location} {entry.stock_code} 数量无法匹配历史持仓"
             f"（需减少 {quantity}，已有 {security.quantity}）；请补充买入或转入数量记录。"
         )
     cost = (
@@ -163,7 +198,7 @@ def apply_security(security: Security, entry: Entry) -> bool:
     business, amount = entry.business, entry.amount
     if business == "证券买入":
         if entry.quantity <= 0 or amount >= 0:
-            raise ValueError(f"第 {entry.line} 行买入数量或金额方向异常")
+            raise ValueError(f"{entry.location} 买入数量或金额方向异常")
         security.quantity += entry.quantity
         security.cost -= amount
         security.trades += 1
@@ -179,7 +214,7 @@ def apply_security(security: Security, entry: Entry) -> bool:
             return False
         fees = sum(entry.fees.values(), ZERO)
         if amount >= 0 or -amount < fees:
-            raise ValueError(f"第 {entry.line} 行逆回购拆出金额异常")
+            raise ValueError(f"{entry.location} 逆回购拆出金额异常")
         security.repo_principal += -amount - fees
         security.repo_quantity += abs(entry.quantity)
         security.realized -= fees
@@ -191,7 +226,7 @@ def apply_security(security: Security, entry: Entry) -> bool:
         principal = abs(entry.quantity) * unit
         if principal > security.repo_principal:
             raise ValueError(
-                f"第 {entry.line} 行逆回购购回本金超出历史拆出本金，需要更早的流水。"
+                f"{entry.location} 逆回购购回本金超出历史拆出本金，需要更早的流水。"
             )
         security.repo_principal -= principal
         security.repo_quantity -= abs(entry.quantity)
@@ -205,7 +240,7 @@ def apply_transfer(security: Security, entry: Entry) -> None:
     incoming = entry.business == "转托转入"
     quantity = abs(entry.quantity)
     if quantity == 0:
-        raise ValueError(f"第 {entry.line} 行托管转移数量为零")
+        raise ValueError(f"{entry.location} 托管转移数量为零")
     security.transfer_count += 1
     removed = ZERO
     if incoming:
@@ -224,7 +259,7 @@ def apply_transfer(security: Security, entry: Entry) -> None:
         security.realized += value - removed
 
 
-def analyze(entries: list[Entry]) -> Report:
+def analyze_platform(entries: list[Entry]) -> Report:
     report = Report()
     repayments = Counter(
         (e.date, e.amount) for e in entries if e.business == "拆出质押购回"
@@ -266,6 +301,40 @@ def analyze(entries: list[Entry]) -> Report:
             continue
         apply_cash(report, entry, repayments)
     return report
+
+
+def merge_security(target: Security, source: Security) -> None:
+    for name in (
+        "quantity", "cost", "realized", "distributions", "transfer_net",
+        "transfer_count", "repo_principal", "repo_quantity", "cash_change", "trades",
+    ):
+        setattr(target, name, getattr(target, name) + getattr(source, name))
+    target.cost_known &= source.cost_known
+    target.transfer_known &= source.transfer_known
+    for name, amount in source.fees.items():
+        target.fees[name] += amount
+
+
+def analyze(entries: list[Entry]) -> Report:
+    groups = defaultdict(list)
+    for entry in sorted(entries, key=entry_sort_key):
+        groups[entry.platform.name].append(entry)
+    result = Report()
+    for batch in groups.values():
+        report = analyze_platform(batch)
+        for name in ("inflow", "outflow", "interest", "adjustment"):
+            setattr(result, name, getattr(result, name) + getattr(report, name))
+        result.unknown.extend(report.unknown)
+        result.businesses.update(report.businesses)
+        for name, amount in report.fees.items():
+            result.fees[name] += amount
+        for code, security in report.securities.items():
+            merge_security(result.securities.setdefault(code, Security()), security)
+    for entry in sorted(entries, key=entry_sort_key):
+        if entry.stock_code in result.securities and entry.stock_name:
+            result.securities[entry.stock_code].name = entry.stock_name
+    result.unknown.sort(key=entry_sort_key)
+    return result
 
 
 def apply_cash(report: Report, entry: Entry, repayments: Counter) -> None:
