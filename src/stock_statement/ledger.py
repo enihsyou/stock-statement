@@ -1,184 +1,14 @@
-"""证券流水解析与历史成本核算。"""
+"""按账户核算移动加权成本并合并证券历史收益。"""
 
-import re
 from collections import Counter, defaultdict
-from dataclasses import dataclass, field
-from datetime import date
-from decimal import Decimal, InvalidOperation
-from pathlib import Path
+from decimal import Decimal
 
-from .platforms import FEE_COLUMNS, PLATFORMS, Platform, decimal, identify_platform
-
-ZERO = Decimal(0)
-
-
-@dataclass
-class Entry:
-    date: str
-    business: str
-    stock_code: str
-    stock_name: str
-    quantity: Decimal
-    amount: Decimal
-    serial: str
-    line: int
-    fees: dict[str, Decimal]
-    platform: Platform
-    trade_amount: Decimal | None
-    trade_price: Decimal | None
-    time: str = ""
-    source: str = ""
-
-    @property
-    def location(self) -> str:
-        return f"{self.source} 第 {self.line} 行"
-
-
-def read_entries(path: Path) -> list[Entry]:
-    raw = path.read_bytes()
-    try:
-        content = raw.decode("gb18030")
-    except UnicodeDecodeError:
-        content = raw.decode("utf-8-sig")
-    lines = content.splitlines()
-    header_index = next(
-        (
-            i
-            for i, line in enumerate(lines)
-            if line.lstrip().startswith(tuple(p.header_start for p in PLATFORMS))
-        ),
-        None,
-    )
-    if header_index is None:
-        raise ValueError(
-            "未找到资金流水表头，请使用包含业务名称和费用明细的资金流水文件。"
-        )
-    # GB18030 字节位置保留客户端中文两格、ASCII 一格的固定列宽。
-    header = lines[header_index].encode("gb18030")
-    columns = [
-        (m.group().decode("gb18030"), m.start()) for m in re.finditer(rb"\S+", header)
-    ]
-    platform = identify_platform({name for name, _ in columns})
-    entries = []
-    for number, line in enumerate(lines[header_index + 1 :], header_index + 2):
-        if not line.strip() or set(line.strip()) <= {"-", "="}:
-            continue
-        values = split_columns(line, columns)
-        try:
-            values = platform.normalize(values)
-            quantity, trade_amount, trade_price = platform.trade_values(values)
-            validate_date(values["成交日期"])
-            if values["币种"] != "人民币":
-                raise ValueError("仅支持人民币，不能合计不同币种")
-            entries.append(
-                Entry(
-                    values["成交日期"],
-                    values["业务名称"],
-                    values["证券代码"],
-                    values["证券名称"],
-                    quantity,
-                    decimal(values["发生金额"]),
-                    values["流水号"],
-                    number,
-                    {name: decimal(values[name]) for name in FEE_COLUMNS},
-                    platform,
-                    trade_amount,
-                    trade_price,
-                    values.get("发生时间", ""),
-                    str(path),
-                )
-            )
-        except (ValueError, InvalidOperation) as exc:
-            raise ValueError(f"第 {number} 行无法解析：{exc}") from exc
-    if not entries:
-        raise ValueError("文件没有流水记录")
-    return sorted(entries, key=entry_sort_key)
-
-
-def entry_identity(entry: Entry) -> tuple:
-    return (
-        entry.platform.name, entry.date, entry.time, entry.serial,
-        entry.business, entry.stock_code, entry.quantity, entry.amount,
-        entry.trade_amount, entry.trade_price, tuple(sorted(entry.fees.items())),
-    )
-
-
-def read_files(paths: list[Path]) -> tuple[list[Entry], int]:
-    entries = []
-    seen = Counter()
-    duplicates = 0
-    for path in paths:
-        try:
-            batch = read_entries(path)
-        except (ValueError, UnicodeError) as exc:
-            raise ValueError(f"{path}：{exc}") from exc
-        occurrences = Counter()
-        for entry in batch:
-            key = entry_identity(entry)
-            occurrences[key] += 1
-            if occurrences[key] <= seen[key]:
-                duplicates += 1
-            else:
-                entries.append(entry)
-        seen |= occurrences
-    return sorted(entries, key=entry_sort_key), duplicates
-
-
-def validate_date(value: str) -> None:
-    if not re.fullmatch(r"[0-9]{8}", value):
-        raise ValueError(f"日期应为 YYYYMMDD：{value}")
-    date.fromisoformat(value)
-
-
-def entry_sort_key(entry: Entry) -> tuple:
-    serial = (0, int(entry.serial)) if entry.serial.isdecimal() else (1, entry.serial)
-    return entry.date, entry.time, serial, entry.line
-
-
-def split_columns(line: str, columns: list[tuple[str, int]]) -> dict[str, str]:
-    data = line.encode("gb18030")
-    result = {}
-    for index, (name, start) in enumerate(columns):
-        end = columns[index + 1][1] if index + 1 < len(columns) else len(data)
-        result[name] = data[start:end].decode("gb18030").strip()
-    return result
-
-
-@dataclass
-class Security:
-    name: str = ""
-    quantity: Decimal = ZERO
-    cost: Decimal = ZERO
-    realized: Decimal = ZERO
-    distributions: Decimal = ZERO
-    transfer_net: Decimal = ZERO
-    transfer_count: int = 0
-    transfer_known: bool = True
-    repo_principal: Decimal = ZERO
-    repo_quantity: Decimal = ZERO
-    cost_known: bool = True
-    cash_change: Decimal = ZERO
-    trades: int = 0
-    fees: dict[str, Decimal] = field(default_factory=lambda: defaultdict(Decimal))
-
-    @property
-    def profit(self) -> Decimal:
-        return self.realized + self.distributions
-
-
-@dataclass
-class Report:
-    securities: dict[str, Security] = field(default_factory=dict)
-    inflow: Decimal = ZERO
-    outflow: Decimal = ZERO
-    interest: Decimal = ZERO
-    adjustment: Decimal = ZERO
-    fees: dict[str, Decimal] = field(default_factory=lambda: defaultdict(Decimal))
-    unknown: list[Entry] = field(default_factory=list)
-    businesses: Counter = field(default_factory=Counter)
+from .attributes import ZERO
+from .models import Entry, Report, Security, entry_sort_key
 
 
 def remove_cost(security: Security, quantity: Decimal, entry: Entry) -> Decimal:
+    """按移动加权成本移除持仓，数量不足时停止核算。"""
     if quantity <= 0 or quantity > security.quantity:
         raise ValueError(
             f"{entry.location} {entry.stock_code} 数量无法匹配历史持仓"
@@ -195,6 +25,7 @@ def remove_cost(security: Security, quantity: Decimal, entry: Entry) -> Decimal:
 
 
 def apply_security(security: Security, entry: Entry) -> bool:
+    """核算一条证券业务，并告知调用方是否识别该业务。"""
     business, amount = entry.business, entry.amount
     if business == "证券买入":
         if entry.quantity <= 0 or amount >= 0:
@@ -209,9 +40,18 @@ def apply_security(security: Security, entry: Entry) -> bool:
         apply_transfer(security, entry)
     elif business in {"股息入账", "股息红利税补缴"}:
         security.distributions += amount
-    elif business == "质押回购拆出":
-        if not entry.stock_code.startswith(("204", "1318")):
-            return False
+    elif business in {"质押回购拆出", "拆出质押购回"}:
+        apply_repo(security, entry)
+    else:
+        return False
+    return True
+
+
+def apply_repo(security: Security, entry: Entry) -> None:
+    """按平台数量单位核算逆回购本金、费用和购回收益。"""
+    unit = entry.platform.repo_quantity_unit(entry.stock_code)
+    amount = entry.amount
+    if entry.business == "质押回购拆出":
         fees = sum(entry.fees.values(), ZERO)
         if amount >= 0 or -amount < fees:
             raise ValueError(f"{entry.location} 逆回购拆出金额异常")
@@ -219,10 +59,7 @@ def apply_security(security: Security, entry: Entry) -> bool:
         security.repo_quantity += abs(entry.quantity)
         security.realized -= fees
         security.trades += 1
-    elif business == "拆出质押购回":
-        if not entry.stock_code.startswith(("204", "1318")):
-            return False
-        unit = entry.platform.repo_quantity_unit(entry.stock_code)
+    else:
         principal = abs(entry.quantity) * unit
         if principal > security.repo_principal:
             raise ValueError(
@@ -231,12 +68,10 @@ def apply_security(security: Security, entry: Entry) -> bool:
         security.repo_principal -= principal
         security.repo_quantity -= abs(entry.quantity)
         security.realized += amount - principal
-    else:
-        return False
-    return True
 
 
 def apply_transfer(security: Security, entry: Entry) -> None:
+    """以流水披露的估值记录托管转移及其成本变化。"""
     incoming = entry.business == "转托转入"
     quantity = abs(entry.quantity)
     if quantity == 0:
@@ -259,37 +94,48 @@ def apply_transfer(security: Security, entry: Entry) -> None:
         security.realized += value - removed
 
 
-def analyze_platform(entries: list[Entry]) -> Report:
-    report = Report()
-    repayments = Counter(
-        (e.date, e.amount) for e in entries if e.business == "拆出质押购回"
-    )
+def registration_pairs(entries: list[Entry]) -> dict[str, Counter]:
+    """找出同日同证券同数量且无现金与费用的指定交易配对。"""
     registrations = Counter(
         (e.date, e.stock_code, e.quantity)
         for e in entries
-        if e.business == "指定入账" and e.amount == 0
+        if e.business == "指定入账" and e.amount == 0 and not any(e.fees.values())
     )
     deregistrations = Counter(
         (e.date, e.stock_code, e.quantity)
         for e in entries
-        if e.business == "撤指转出" and e.amount == 0
+        if e.business == "撤指转出" and e.amount == 0 and not any(e.fees.values())
     )
     paired = registrations & deregistrations
-    remaining_pairs = {name: paired.copy() for name in ("指定入账", "撤指转出")}
+    return {name: paired.copy() for name in ("指定入账", "撤指转出")}
+
+
+def consume_registration(entry: Entry, remaining_pairs: dict[str, Counter]) -> bool:
+    """消费一条对资产没有影响的指定交易记录。"""
+    if entry.amount or any(entry.fees.values()):
+        return False
+    if entry.business in {"指定交易", "撤销指定"} and entry.quantity == 0:
+        return True
+    key = (entry.date, entry.stock_code, entry.quantity)
+    if entry.business in remaining_pairs and remaining_pairs[entry.business][key] > 0:
+        remaining_pairs[entry.business][key] -= 1
+        return True
+    return False
+
+
+def analyze_platform(entries: list[Entry]) -> Report:
+    """在单个平台账户内按时间累计持仓与资金业务。"""
+    report = Report()
+    repayments = Counter(
+        (e.date, e.amount) for e in entries if e.business == "拆出质押购回"
+    )
+    remaining_pairs = registration_pairs(entries)
     for entry in entries:
         report.businesses[entry.business] += 1
         for name, amount in entry.fees.items():
             report.fees[name] += amount
-        if entry.amount == 0 and not any(entry.fees.values()):
-            if entry.business in {"指定交易", "撤销指定"} and entry.quantity == 0:
-                continue
-            key = (entry.date, entry.stock_code, entry.quantity)
-            if (
-                entry.business in remaining_pairs
-                and remaining_pairs[entry.business][key] > 0
-            ):
-                remaining_pairs[entry.business][key] -= 1
-                continue
+        if consume_registration(entry, remaining_pairs):
+            continue
         if entry.stock_code:
             security = report.securities.setdefault(entry.stock_code, Security())
             security.name = entry.stock_name or security.name
@@ -304,6 +150,7 @@ def analyze_platform(entries: list[Entry]) -> Report:
 
 
 def merge_security(target: Security, source: Security) -> None:
+    """合并各平台独立核算的同一证券结果。"""
     for name in (
         "quantity", "cost", "realized", "distributions", "transfer_net",
         "transfer_count", "repo_principal", "repo_quantity", "cash_change", "trades",
@@ -316,6 +163,7 @@ def merge_security(target: Security, source: Security) -> None:
 
 
 def analyze(entries: list[Entry]) -> Report:
+    """按平台独立核算后汇总证券与账户资金。"""
     groups = defaultdict(list)
     for entry in sorted(entries, key=entry_sort_key):
         groups[entry.platform.name].append(entry)
@@ -338,6 +186,7 @@ def analyze(entries: list[Entry]) -> Report:
 
 
 def apply_cash(report: Report, entry: Entry, repayments: Counter) -> None:
+    """累计银行资金、利息和匹配的交收修正，保留未知业务。"""
     if entry.business == "银行转存" and entry.amount >= 0:
         report.inflow += entry.amount
     elif entry.business == "银行转取" and entry.amount <= 0:
