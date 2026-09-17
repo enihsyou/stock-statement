@@ -32,6 +32,15 @@ def rate_text(profit: Decimal, investment: Decimal) -> str:
     return f"收益率 {profit / investment:.2%}" if investment else "收益率不可计算"
 
 
+def ratio_text(value: Decimal, total: Decimal, unit: str) -> str:
+    """以百分比或千分比展示部分金额占总体的比例。"""
+    if not total:
+        return f"占{unit}不可计算"
+    scale = Decimal(100) if unit == "手续费" else Decimal(1000)
+    suffix = "%" if unit == "手续费" else "‰"
+    return f"占{unit} {value / total * scale:.2f}{suffix}"
+
+
 def change_style(value: Decimal) -> str:
     """用红涨绿跌表示有符号的金融变化。"""
     return "red" if value > ZERO else "green" if value < ZERO else ""
@@ -165,33 +174,41 @@ def report_rows(report: Report) -> tuple[list[dict], dict]:
 def show_overview(console: Console, report: Report, totals: dict, incomplete: bool) -> None:
     """显示净投入、已实现收益与剩余成本概览。"""
     fees = sum(report.fees.values(), ZERO)
-    share = f"占交易手续费 {report.fees['印花税'] / fees:.2%}" if fees else "无交易手续费"
+    fee_share = ratio_text(fees, report.security_turnover, "交易总额")
+
+    def fee_note(name: str) -> str:
+        amount = report.fees[name]
+        return f"{ratio_text(amount, report.security_turnover, '交易总额')}；{ratio_text(amount, fees, '手续费')}"
+
     investment = report.inflow - report.outflow + totals["托管净转入"]
     profit = totals["已实现净收益"] + rounded(report.interest)
     profit_note = ("收益不完整；" if incomplete else "") + rate_text(profit, investment)
     cost_note = "成本不完整，仅合计已知项" if any(not s.cost_known for s in report.securities.values()) else ""
     rows = [
-        ("银行流入", report.inflow, "", "magenta", False),
-        ("银行流出", report.outflow, "", "magenta", False),
-        ("现金净投入", report.inflow - report.outflow, "仅银行转账", "magenta", True),
+        ("账户净投入", investment, "", "magenta", True),
+        ("    其中：现金净投入", report.inflow - report.outflow, "仅银行转账", "magenta", True),
         ("已实现净收益", profit, profit_note, "magenta", True),
         ("    其中：资金利息", report.interest, "", "magenta", True),
-        ("交易手续费合计", totals["手续费合计"], "不再次扣减", "yellow", False),
-        ("    其中：印花税", totals["印花税"], share, "yellow", False),
+        ("证券交易总额", report.security_turnover, "证券买卖金额之和，不含逆回购", "blue", False),
+        ("交易手续费合计", totals["手续费合计"], fee_share, "yellow", False),
+        ("    其中：印花税", totals["印花税"], fee_note("印花税"), "yellow", False),
+        ("    其中：佣金", totals["佣金"], fee_note("佣金"), "yellow", False),
         ("剩余成本", totals["剩余成本"], cost_note, "blue", False),
+        ("    其中：证券持仓成本", display_sum(
+            s.cost for s in report.securities.values() if s.cost_known
+        ), "", "blue", False),
         ("    其中：逆回购本金", display_sum(s.repo_principal for s in report.securities.values()), "", "blue", False),
-        ("逆回购交收记录", report.adjustment, "与购回匹配，不重复计入收益", "magenta", False),
     ]
     if any(s.transfer_count for s in report.securities.values()):
         missing = any(not s.transfer_known for s in report.securities.values())
-        rows[3:3] = [
-            ("托管净转入", totals["托管净转入"], "成交金额缺失，仅合计已知项" if missing else "转入为正，转出为负", "magenta", True),
-            ("账户净投入", investment, "不完整" if missing else "", "magenta", True),
-        ]
+        rows[0] = ("账户净投入", investment, "不完整" if missing else "", "magenta", True)
+        rows[2:2] = [("    其中：托管净转入", totals["托管净转入"],
+                      "成交金额缺失，仅合计已知项" if missing else "转入为正，转出为负",
+                      "magenta", True)]
     columns = (DisplayColumn("项目"), DisplayColumn("金额（元）"), DisplayColumn("备注"))
     formatted = []
     for label, amount, note, style, change in rows:
-        amount_column = DisplayColumn("金额", style, signed=label == "托管净转入", change=change)
+        amount_column = DisplayColumn("金额", style, signed=label.endswith("托管净转入"), change=change)
         formatted.append({
             "项目": Text(label, style=style),
             "金额（元）": amount_column.format(amount), "备注": Text(note),
@@ -267,13 +284,11 @@ def render_report(
     show_overview(console, report, totals, incomplete)
     show_securities(console, rows, totals, any(s.transfer_count for s in report.securities.values()))
     notes = [
-        "收益采用移动加权成本，包含分红、补缴红利税及逆回购收益，不计算浮盈浮亏。费用已包含于净收付款。",
-        "金额逐证券四舍五入至分后合计，概览与明细使用相同口径。剩余数量含逆回购原始数量，各证券单位不一定相同。",
-        "现金净投入只含银行转账；账户净投入另含托管净转入。交易笔数统计买入、卖出和逆回购拆出记录。",
-        "托管转移依流水披露的成交金额或数量与单价估值。",
+        "收益采用移动加权成本，不计算浮盈浮亏；费用已包含于净收付款。",
+        "账户净投入包含托管净转入；其余计算口径见项目文档。",
     ]
     if len(platforms) > 1:
-        notes.append("各平台分别核算后按证券汇总；托管转移按各账户记录金额计价，跨平台转移不另作抵消。")
+        notes.append("各平台分别核算后按证券汇总，跨平台托管转移不另作抵消。")
     notes.extend(dict.fromkeys(note for platform in platforms.values() for note in platform.notes))
     for note in notes:
         console.print(note, markup=False, soft_wrap=True)

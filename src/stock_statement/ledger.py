@@ -132,6 +132,8 @@ def analyze_platform(entries: list[Entry]) -> Report:
     remaining_pairs = registration_pairs(entries)
     for entry in entries:
         report.businesses[entry.business] += 1
+        if entry.business in {"证券买入", "证券卖出"}:
+            report.security_turnover += abs(entry.amount)
         for name, amount in entry.fees.items():
             report.fees[name] += amount
         if consume_registration(entry, remaining_pairs):
@@ -170,7 +172,7 @@ def analyze(entries: list[Entry]) -> Report:
     result = Report()
     for batch in groups.values():
         report = analyze_platform(batch)
-        for name in ("inflow", "outflow", "interest", "adjustment"):
+        for name in ("inflow", "outflow", "interest", "adjustment", "security_turnover"):
             setattr(result, name, getattr(result, name) + getattr(report, name))
         result.unknown.extend(report.unknown)
         result.businesses.update(report.businesses)

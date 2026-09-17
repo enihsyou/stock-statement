@@ -73,6 +73,7 @@ class Report:
     outflow: Decimal = ZERO
     interest: Decimal = ZERO
     adjustment: Decimal = ZERO
+    security_turnover: Decimal = ZERO
     fees: dict[str, Decimal] = field(default_factory=lambda: defaultdict(Decimal))
     unknown: list[Entry] = field(default_factory=list)
     businesses: Counter = field(default_factory=Counter)

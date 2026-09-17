@@ -38,6 +38,7 @@ def test_moving_average_cost_dividends_and_tax():
     assert stock.distributions == D(80)
     assert stock.profit == D("322.50")
     assert stock.trades == 3
+    assert report.security_turnover == D(4005)
     assert report.fees["佣金"] == D(15)
     assert not report.unknown
 
@@ -85,6 +86,7 @@ def test_repo_principal_interest_and_cash_settlement():
     stock = report.securities["000000"]
     assert stock.repo_principal == stock.repo_quantity == 0
     assert stock.realized == D(2)
+    assert report.security_turnover == 0
     assert report.adjustment == D(1003)
     assert not report.unknown
 

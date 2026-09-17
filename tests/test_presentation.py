@@ -46,6 +46,19 @@ def test_redirected_report_keeps_nonzero_security_columns():
     assert "\x1b[" not in text
 
 
+def test_overview_shows_account_investment_and_trading_summary():
+    records = report_entries()
+    output = StringIO()
+    console = Console(file=output, width=40, force_terminal=False)
+    render_report(console, records, analyze(records), files_count=1, duplicates=0)
+    text = output.getvalue()
+    for value in ("账户净投入", "其中：现金净投入", "证券交易总额",
+                  "其中：佣金", "证券持仓成本", "占交易总额"):
+        assert value in text
+    assert "银行流入" not in text
+    assert "银行流出" not in text
+
+
 def test_report_keeps_nonzero_fee_and_distribution_columns():
     records = [
         entry("证券买入", "100", "-1001", fees={"佣金": "1"}, serial="1"),
