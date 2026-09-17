@@ -82,6 +82,7 @@ NUMERIC_COLUMNS = tuple(
     column for column in SECURITY_COLUMNS
     if column.name not in {"证券代码", "最新名称", "备注"}
 )
+ZERO_HIDDEN_COLUMNS = {"手续费合计", *FEE_COLUMNS, "分红净额"}
 
 
 def print_table(
@@ -198,14 +199,45 @@ def show_overview(console: Console, report: Report, totals: dict, incomplete: bo
     print_table(console, columns, formatted)
 
 
+def security_column_hidden_reason(
+    column: DisplayColumn, rows: list[dict], show_transfers: bool,
+) -> str | None:
+    """返回证券列的隐藏原因，无需隐藏时返回空值。"""
+    if column.name == "托管净转入" and not show_transfers:
+        return "无有效托管业务"
+    if (
+        column.name in ZERO_HIDDEN_COLUMNS
+        and not any(row[column.name] != ZERO for row in rows)
+    ):
+        return "所有明细均为 0"
+    if column.name == "备注" and not any(row["备注"] for row in rows):
+        return "无备注内容"
+    return None
+
+
+def hidden_columns_note(hidden: list[tuple[str, str]]) -> str:
+    """将隐藏列按原因归组为简洁说明。"""
+    names_by_reason: dict[str, list[str]] = {}
+    for name, reason in hidden:
+        names_by_reason.setdefault(reason, []).append(name)
+    groups = [f"{'、'.join(names)}（{reason}）" for reason, names in names_by_reason.items()]
+    return f"已隐藏列：{'；'.join(groups)}。"
+
+
 def show_securities(console: Console, rows: list[dict], totals: dict, show_transfers: bool) -> None:
     """展示证券明细及费用分项。"""
-    columns = tuple(
-        column for column in SECURITY_COLUMNS
-        if (column.name != "托管净转入" or show_transfers)
-        and (column.name != "备注" or any(row["备注"] for row in rows))
-    )
+    decisions = [
+        (column, security_column_hidden_reason(column, rows, show_transfers))
+        for column in SECURITY_COLUMNS
+    ]
+    columns = tuple(column for column, reason in decisions if reason is None)
     print_table(console, columns, rows, title="按证券汇总及交易手续费明细", total=totals)
+    hidden: list[tuple[str, str]] = []
+    for column, reason in decisions:
+        if reason is not None:
+            hidden.append((column.name, reason))
+    if hidden:
+        console.print(hidden_columns_note(hidden), style="dim", markup=False, soft_wrap=True)
 
 
 def show_unknown(console: Console, entries: list[Entry]) -> None:
