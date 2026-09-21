@@ -14,7 +14,7 @@ def entry(business, quantity="0", amount="0", *, security=0, trade_amount=None,
     """构造仅含业务所需内容的匿名流水。"""
     code, name = security_identity(security) if security is not None else ("", "")
     return Entry(
-        date=day, business=business, stock_code=code, stock_name=name,
+        date=day, original_date=day, business=business, stock_code=code, stock_name=name,
         quantity=D(quantity), amount=D(amount), serial=serial, line=1,
         fees={name: D(value) for name, value in (fees or {}).items()},
         platform=platform or PLATFORMS[0],

@@ -126,12 +126,12 @@ def consume_registration(entry: Entry, remaining_pairs: dict[str, Counter]) -> b
 def analyze_platform(entries: list[Entry]) -> Report:
     """在单个平台账户内按时间累计持仓与资金业务。"""
     report = Report()
-    repayments = Counter(
-        (e.date, e.amount) for e in entries if e.business == "拆出质押购回"
-    )
     remaining_pairs = registration_pairs(entries)
     for entry in entries:
         report.businesses[entry.business] += 1
+        if entry.business == "交收资金修正":
+            report.adjustment += entry.amount
+            continue
         if entry.business in {"证券买入", "证券卖出"}:
             report.security_turnover += abs(entry.amount)
         for name, amount in entry.fees.items():
@@ -147,7 +147,7 @@ def analyze_platform(entries: list[Entry]) -> Report:
             if not apply_security(security, entry):
                 report.unknown.append(entry)
             continue
-        apply_cash(report, entry, repayments)
+        apply_cash(report, entry)
     return report
 
 
@@ -187,19 +187,14 @@ def analyze(entries: list[Entry]) -> Report:
     return result
 
 
-def apply_cash(report: Report, entry: Entry, repayments: Counter) -> None:
-    """累计银行资金、利息和匹配的交收修正，保留未知业务。"""
+def apply_cash(report: Report, entry: Entry) -> None:
+    """累计银行资金和利息，保留未知业务。"""
     if entry.business == "银行转存" and entry.amount >= 0:
         report.inflow += entry.amount
     elif entry.business == "银行转取" and entry.amount <= 0:
         report.outflow -= entry.amount
     elif entry.business == "利息归本":
         report.interest += entry.amount
-    elif (
-        entry.business == "交收资金修正" and repayments[(entry.date, entry.amount)] > 0
-    ):
-        repayments[(entry.date, entry.amount)] -= 1
-        report.adjustment += entry.amount
     elif entry.business == "转存管转出" and entry.amount == 0:
         return
     else:

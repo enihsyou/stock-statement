@@ -35,12 +35,9 @@ def read_entries(path: Path) -> list[Entry]:
 
 
 def entry_identity(entry: Entry) -> tuple:
-    """用业务内容识别同平台不同文件中的重复流水。"""
-    return (
-        entry.platform.name, entry.date, entry.time, entry.serial,
-        entry.business, entry.stock_code, entry.quantity, entry.amount,
-        entry.trade_amount, entry.trade_price, tuple(sorted(entry.fees.items())),
-    )
+    """用平台、原始日期、交易行为及编号识别跨文件重复流水。"""
+    return (entry.platform.name, entry.original_date, entry.business,
+            entry.transaction_id or None, entry.serial or None)
 
 
 def read_files(paths: list[Path]) -> tuple[list[Entry], int]:

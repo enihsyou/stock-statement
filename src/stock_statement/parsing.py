@@ -16,6 +16,7 @@ from .attributes import (
     QUANTITY,
     SERIAL,
     TIME,
+    TRANSACTION_ID,
     TRADE_AMOUNT,
     ZERO,
     FinancialAttribute,
@@ -99,8 +100,10 @@ def parse_entry(index: HeaderIndex, line: str, number: int, source: str) -> Entr
             time = ""
     if values[CURRENCY] != "人民币":
         raise ValueError("仅支持人民币，不能合计不同币种")
-    return Entry(date=day, business=business, stock_code=values[CODE], stock_name=values[NAME],
+    return Entry(date=day, original_date=values[DATE], business=business,
+                 stock_code=values[CODE], stock_name=values[NAME],
                  quantity=quantity, amount=values[CASH_AMOUNT], serial=values[SERIAL],
+                 transaction_id=values[TRANSACTION_ID],
                  line=number, fees={fee.name: values[fee] for fee in FEES}, platform=platform,
                  trade_amount=amount, trade_price=price, time=time, source=source)
 

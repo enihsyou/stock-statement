@@ -36,6 +36,7 @@ def test_directory_report_counts_files_and_preserves_duplicate_occurrences(tmp_p
     values = {
         "成交日期": "20260901", "业务名称": "银行转存",
         "币种": "人民币", "发生金额": "100",
+        "流水号": "1",
     }
     write_statement(tmp_path / "一.txt", list(values), [values, values])
     write_statement(tmp_path / "二.TXT", list(values), [values])

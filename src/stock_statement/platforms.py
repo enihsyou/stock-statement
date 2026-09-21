@@ -3,7 +3,9 @@
 from dataclasses import dataclass, field
 from decimal import Decimal
 
-from .attributes import BUSINESS, DATE, PRICE, SETTLEMENT_DATE, FinancialAttribute
+from .attributes import (
+    BUSINESS, DATE, PRICE, SETTLEMENT_DATE, TRANSACTION_ID, FinancialAttribute,
+)
 
 
 @dataclass(frozen=True)
@@ -24,7 +26,9 @@ class Platform:
 
     def normalize_business(self, business: str) -> str:
         """将平台业务名称映射到统一核算业务。"""
-        return self.businesses.get(business, business)
+        business = self.businesses.get(business, business)
+        return {"盘后定价买": "证券买入", "盘后定价卖": "证券卖出",
+                "盘后买": "证券买入", "盘后卖": "证券卖出"}.get(business, business)
 
     def repo_quantity_unit(self, code: str) -> Decimal:
         """返回逆回购每个原始数量单位所代表的本金。"""
@@ -41,7 +45,8 @@ PLATFORMS = (
     ),
     Platform(
         name="东方财富证券", identifiers=frozenset({"发生日期", "交易类别"}),
-        columns={DATE: ("发生日期",), BUSINESS: ("交易类别",), PRICE: ("成交均价",)},
+        columns={DATE: ("发生日期",), BUSINESS: ("交易类别",), PRICE: ("成交均价",),
+                 TRANSACTION_ID: ("成交编号",)},
         repo_units=(("204", Decimal(100)), ("1318", Decimal(100))),
         businesses={"银行转证券": "银行转存", "证券转银行": "银行转取",
                     "融券回购": "质押回购拆出", "融券购回": "拆出质押购回",
