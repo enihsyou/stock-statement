@@ -1,3 +1,1 @@
-from .cli import main
-
-__all__ = ["main"]
+"""支持多券商的证券流水分析。"""

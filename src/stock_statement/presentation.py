@@ -1,63 +1,48 @@
-"""以完整表格展示证券流水核算结果。"""
+"""使用 Rich 排版报告投影，不承担核算或指标汇总。"""
 
-from collections.abc import Iterable
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
-from decimal import ROUND_HALF_UP, Decimal
+from decimal import Decimal
+from typing import Literal
 
 from rich.console import Console
 from rich.table import Table
 from rich.text import Text
 
-from .attributes import FEE_COLUMNS, FEES, ZERO
-from .models import Entry, Report, Security
+from .amounts import rounded
+from .attributes import FEE_COLUMNS, ZERO
+from .models import Entry
+from .reporting import OverviewKey, OverviewRow, ReportView, SecurityRow, SecurityTotals
 
-
-def rounded(value: Decimal) -> Decimal:
-    """将金额按四舍五入保留到分。"""
-    return value.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP) + ZERO
+type Cell = str | Text | Decimal | int | None
+type DisplayRecord = Mapping[str, Cell]
 
 
 def money(value: Decimal) -> str:
-    """将金额显示为带千分位的两位小数。"""
+    """显示带千分位的两位小数金额。"""
     return f"{rounded(value):,.2f}"
 
 
-def display_sum(values: Iterable[Decimal]) -> Decimal:
-    """先逐项舍入再合计，保持明细与概览一致。"""
-    return sum((rounded(value) for value in values), ZERO)
-
-
-def rate_text(profit: Decimal, investment: Decimal) -> str:
-    """根据净投入生成收益率说明。"""
-    return f"收益率 {profit / investment:.2%}" if investment else "收益率不可计算"
-
-
-def ratio_text(value: Decimal, total: Decimal, unit: str) -> str:
-    """以百分比或千分比展示部分金额占总体的比例。"""
-    if not total:
-        return f"占{unit}不可计算"
-    scale = Decimal(100) if unit == "手续费" else Decimal(1000)
-    suffix = "%" if unit == "手续费" else "‰"
-    return f"占{unit} {value / total * scale:.2f}{suffix}"
-
-
 def change_style(value: Decimal) -> str:
-    """用红涨绿跌表示有符号的金融变化。"""
+    """用红涨绿跌表达有符号的变动。"""
     return "red" if value > ZERO else "green" if value < ZERO else ""
 
 
 @dataclass(frozen=True)
 class DisplayColumn:
-    """定义报表列的名称、金融领域和数值呈现方式。"""
+    """声明稳定数据键、标题、格式、对齐及隐藏策略。"""
 
-    name: str
+    key: str
+    title: str
     style: str = ""
     number: bool = False
     signed: bool = False
     change: bool = False
+    align: Literal["left", "right"] = "right"
+    hide: Literal["never", "all_zero", "no_transfers", "empty"] = "never"
 
-    def format(self, value: str | Text | Decimal | int | None) -> Text:
-        """按列语义格式化单元格并应用颜色。"""
+    def format(self, value: Cell) -> Text:
+        """格式化单元格，未知值显示为破折号。"""
         if value is None:
             return Text("—", style="dim")
         if isinstance(value, Text):
@@ -75,176 +60,77 @@ class DisplayColumn:
 
 
 SECURITY_COLUMNS = (
-    DisplayColumn("证券代码", "cyan"),
-    DisplayColumn("最新名称", "cyan"),
-    DisplayColumn("已实现净收益", "magenta", change=True),
-    DisplayColumn("手续费合计", "yellow"),
-    *(DisplayColumn(attribute.name, attribute.style) for attribute in FEES),
-    DisplayColumn("交易笔数", "blue", number=True),
-    DisplayColumn("分红净额", "magenta", change=True),
-    DisplayColumn("剩余数量", "blue", number=True),
-    DisplayColumn("剩余成本", "blue"),
-    DisplayColumn("托管净转入", "magenta", signed=True, change=True),
-    DisplayColumn("备注"),
+    DisplayColumn("code", "证券代码", "cyan", align="left"),
+    DisplayColumn("name", "最新名称", "cyan", align="left"),
+    DisplayColumn("profit", "已实现净收益", "magenta", change=True),
+    DisplayColumn("fee_total", "手续费合计", "yellow", hide="all_zero"),
+    *(DisplayColumn(name, name, "yellow", hide="all_zero") for name in FEE_COLUMNS),
+    DisplayColumn("trades", "交易笔数", "blue", number=True),
+    DisplayColumn("distributions", "分红净额", "magenta", change=True, hide="all_zero"),
+    DisplayColumn("quantity", "剩余数量", "blue", number=True),
+    DisplayColumn("cost", "剩余成本", "blue"),
+    DisplayColumn("transfer_net", "托管净转入", "magenta", signed=True, change=True, hide="no_transfers"),
+    DisplayColumn("notes", "备注", align="left", hide="empty"),
 )
-NUMERIC_COLUMNS = tuple(
-    column for column in SECURITY_COLUMNS
-    if column.name not in {"证券代码", "最新名称", "备注"}
-)
-ZERO_HIDDEN_COLUMNS = {"手续费合计", *FEE_COLUMNS, "分红净额"}
+
+OVERVIEW_COLUMNS = {
+    OverviewKey.INVESTMENT: DisplayColumn("amount", "账户净投入", "magenta", change=True),
+    OverviewKey.CASH_INVESTMENT: DisplayColumn("amount", "    其中：现金净投入", "magenta", change=True),
+    OverviewKey.TRANSFER_NET: DisplayColumn("amount", "    其中：托管净转入", "magenta", signed=True, change=True),
+    OverviewKey.PROFIT: DisplayColumn("amount", "已实现净收益", "magenta", change=True),
+    OverviewKey.INTEREST: DisplayColumn("amount", "    其中：资金利息", "magenta", change=True),
+    OverviewKey.REPO_PROFIT: DisplayColumn("amount", "    其中：逆回购净收益", "magenta", change=True),
+    OverviewKey.TURNOVER: DisplayColumn("amount", "交易总额", "blue"),
+    OverviewKey.SECURITY_TURNOVER: DisplayColumn("amount", "    其中：证券交易总额", "blue"),
+    OverviewKey.REPO_TURNOVER: DisplayColumn("amount", "    其中：逆回购交易总额", "blue"),
+    OverviewKey.FEES: DisplayColumn("amount", "交易手续费合计", "yellow"),
+    OverviewKey.STAMP_TAX: DisplayColumn("amount", "    其中：印花税", "yellow"),
+    OverviewKey.COMMISSION: DisplayColumn("amount", "    其中：佣金", "yellow"),
+    OverviewKey.REPO_FEES: DisplayColumn("amount", "    其中：逆回购手续费", "yellow"),
+    OverviewKey.COST: DisplayColumn("amount", "剩余成本", "blue"),
+    OverviewKey.HOLDING_COST: DisplayColumn("amount", "    其中：证券持仓成本", "blue"),
+    OverviewKey.REPO_PRINCIPAL: DisplayColumn("amount", "    其中：逆回购本金", "blue"),
+}
 
 
 def print_table(
-    console: Console,
-    columns: tuple[DisplayColumn, ...],
-    rows: list[dict],
-    title: str = "",
-    total: dict | None = None,
+    console: Console, columns: tuple[DisplayColumn, ...], rows: Sequence[DisplayRecord],
+    title: str = "", total: DisplayRecord | None = None,
 ) -> None:
-    """按完整单元格宽度输出表格，避免终端与重定向裁剪内容。"""
+    """按完整单元格宽度排版，保留终端和重定向中的全部文本。"""
     records = [*rows, *([total] if total is not None else [])]
-    cells = [[column.format(row[column.name]) for column in columns] for row in records]
+    cells = [[column.format(row[column.key]) for column in columns] for row in records]
     widths = [
-        max([Text(column.name).cell_len, *(row[index].cell_len for row in cells)])
+        max([Text(column.title).cell_len, *(row[index].cell_len for row in cells)])
         for index, column in enumerate(columns)
     ]
     width = max(sum(widths) + 3 * len(columns) + 1, Text(title).cell_len)
     table = Table(title=title or None, width=width, padding=(0, 1))
-    text_columns = {"证券代码", "最新名称", "备注", "项目", "来源", "平台", "日期", "业务", "代码"}
     for column, cell_width in zip(columns, widths):
-        table.add_column(
-            column.name, header_style=column.style or "bold", min_width=cell_width,
-            no_wrap=True, justify="left" if column.name in text_columns else "right",
-        )
+        table.add_column(column.title, header_style=column.style or "bold", min_width=cell_width,
+                         no_wrap=True, justify=column.align)
     for index, row in enumerate(cells):
         table.add_row(*row, style="bold" if total is not None and index == len(cells) - 1 else None)
     console.print(table, width=width, crop=False, soft_wrap=True)
 
 
-def security_values(security: Security) -> dict:
-    """提取单只证券的具名展示数值。"""
+def security_cells(row: SecurityRow) -> DisplayRecord:
+    """将具名报表字段绑定至展示列。"""
     return {
-        "已实现净收益": security.profit if security.cost_known else None,
-        "手续费合计": sum(security.fees.values(), ZERO),
-        **{name: security.fees[name] for name in FEE_COLUMNS},
-        "交易笔数": security.trades,
-        "分红净额": security.distributions,
-        "剩余数量": security.quantity + security.repo_quantity,
-        "剩余成本": security.cost + security.repo_principal if security.cost_known else None,
-        "托管净转入": security.transfer_net if security.transfer_known else None,
+        "code": row.code, "name": row.name, "profit": row.profit, "fee_total": row.fee_total,
+        **{name: row.fees.get(name, ZERO) for name in FEE_COLUMNS},
+        "trades": row.trades, "distributions": row.distributions,
+        "quantity": row.quantity, "cost": row.cost, "transfer_net": row.transfer_net, "notes": row.notes,
     }
 
 
-def report_rows(report: Report) -> tuple[list[dict], dict]:
-    """按收益排列证券，并汇总已知金额及未归属证券的费用。"""
-    ordered = sorted(
-        report.securities.items(),
-        key=lambda item: (item[1].cost_known, item[1].profit), reverse=True,
-    )
-    rows = []
-    for code, security in ordered:
-        notes = []
-        if not security.cost_known:
-            notes.append("收益及成本不完整")
-        if not security.transfer_known:
-            notes.append("托管成交金额缺失")
-        rows.append({
-            "证券代码": code, "最新名称": security.name,
-            **security_values(security), "备注": "；".join(notes),
-        })
-    unassigned = {
-        name: report.fees[name] - sum((s.fees[name] for s in report.securities.values()), ZERO)
-        for name in FEE_COLUMNS
-    }
-    if any(unassigned.values()):
-        unassigns: dict[str, object] = {column.name: ZERO for column in NUMERIC_COLUMNS}
-        unassigns.update(unassigned)
-        unassigns.update({
-            "已实现净收益": None, "手续费合计": sum(unassigned.values(), ZERO),
-            "剩余成本": None, "托管净转入": None,
-        })
-        rows.append({ "证券代码": "—", "最新名称": "未归属证券", **unassigns, "备注": "" })
-    totals: dict[str, object] = {"证券代码": "合计", "最新名称": "", "备注": ""}
-    for column in NUMERIC_COLUMNS:
-        values = (row[column.name] for row in rows if row[column.name] is not None)
-        totals[column.name] = sum(values, ZERO) if column.number else display_sum(values)
-    return rows, totals
-
-
-def repo_rate_note(report: Report) -> str:
-    """按已完成合同的本金与计息天数加权展示扣费后的年化收益率。"""
-    securities = list(report.securities.values())
-    if not any(s.repo_completed_count for s in securities):
-        return "年化收益率不可计算：无已完成交易"
-    if not all(s.repo_rate_known for s in securities):
-        return "年化收益率不可计算：计息天数无法唯一确定"
-    capital_days = sum((s.repo_capital_days for s in securities), ZERO)
-    profit = sum((s.repo_completed_profit for s in securities), ZERO)
-    return "年化" + rate_text(profit * Decimal(365), capital_days)
-
-
-def show_overview(console: Console, report: Report, totals: dict, incomplete: bool) -> None:
-    """显示净投入、已实现收益与剩余成本概览。"""
-    fees = sum(report.fees.values(), ZERO)
-    fee_share = ratio_text(fees, report.turnover, "交易总额")
-
-    def fee_note(amount: Decimal) -> str:
-        return f"{ratio_text(amount, report.turnover, '交易总额')}；{ratio_text(amount, fees, '手续费')}"
-
-    repo_fees = display_sum(s.repo_fees for s in report.securities.values())
-    investment = report.inflow - report.outflow + totals["托管净转入"]
-    profit = totals["已实现净收益"] + rounded(report.interest)
-    profit_note = ("收益不完整；" if incomplete else "") + rate_text(profit, investment)
-    cost_note = "成本不完整，仅合计已知项" if any(not s.cost_known for s in report.securities.values()) else ""
-    rows = [
-        ("账户净投入", investment, "", "magenta", True),
-        ("    其中：现金净投入", report.inflow - report.outflow, "仅银行转账", "magenta", True),
-        ("已实现净收益", profit, profit_note, "magenta", True),
-        ("    其中：资金利息", report.interest, rate_text(report.interest, investment), "magenta", True),
-        ("    其中：逆回购净收益", display_sum(s.repo_profit for s in report.securities.values()),
-         repo_rate_note(report), "magenta", True),
-        ("交易总额", report.turnover, "", "blue", False),
-        ("    其中：证券交易总额", report.security_turnover, "证券买卖金额之和，含手续费", "blue", False),
-        ("    其中：逆回购交易总额", report.repo_turnover, "拆出金额之和，含手续费", "blue", False),
-        ("交易手续费合计", totals["手续费合计"], fee_share, "yellow", False),
-        ("    其中：印花税", totals["印花税"], fee_note(report.fees["印花税"]), "yellow", False),
-        ("    其中：佣金", totals["佣金"], fee_note(report.fees["佣金"]), "yellow", False),
-        ("    其中：逆回购手续费", repo_fees, fee_note(repo_fees), "yellow", False),
-        ("剩余成本", totals["剩余成本"], cost_note, "blue", False),
-        ("    其中：证券持仓成本", display_sum(
-            s.cost for s in report.securities.values() if s.cost_known
-        ), "", "blue", False),
-        ("    其中：逆回购本金", display_sum(s.repo_principal for s in report.securities.values()), "", "blue", False),
-    ]
-    if any(s.transfer_count for s in report.securities.values()):
-        missing = any(not s.transfer_known for s in report.securities.values())
-        rows[0] = ("账户净投入", investment, "不完整" if missing else "", "magenta", True)
-        rows[2:2] = [("    其中：托管净转入", totals["托管净转入"],
-                      "成交金额缺失，仅合计已知项" if missing else "转入为正，转出为负",
-                      "magenta", True)]
-    columns = (DisplayColumn("项目"), DisplayColumn("金额（元）"), DisplayColumn("备注"))
-    formatted = []
-    for label, amount, note, style, change in rows:
-        amount_column = DisplayColumn("金额", style, signed=label.endswith("托管净转入"), change=change)
-        formatted.append({
-            "项目": Text(label, style=style),
-            "金额（元）": amount_column.format(amount), "备注": Text(note),
-        })
-    print_table(console, columns, formatted)
-
-
-def security_column_hidden_reason(
-    column: DisplayColumn, rows: list[dict], show_transfers: bool,
-) -> str | None:
-    """返回证券列的隐藏原因，无需隐藏时返回空值。"""
-    if column.name == "托管净转入" and not show_transfers:
+def hidden_reason(column: DisplayColumn, rows: Sequence[DisplayRecord], show_transfers: bool) -> str | None:
+    """根据列声明判断隐藏原因。"""
+    if column.hide == "no_transfers" and not show_transfers:
         return "无有效托管业务"
-    if (
-        column.name in ZERO_HIDDEN_COLUMNS
-        and not any(row[column.name] != ZERO for row in rows)
-    ):
+    if column.hide == "all_zero" and all(row[column.key] == ZERO for row in rows):
         return "所有明细均为 0"
-    if column.name == "备注" and not any(row["备注"] for row in rows):
+    if column.hide == "empty" and not any(row[column.key] for row in rows):
         return "无备注内容"
     return None
 
@@ -258,59 +144,63 @@ def hidden_columns_note(hidden: list[tuple[str, str]]) -> str:
     return f"已隐藏列：{'；'.join(groups)}。"
 
 
-def show_securities(console: Console, rows: list[dict], totals: dict, show_transfers: bool) -> None:
-    """展示证券明细及费用分项。"""
-    decisions = [
-        (column, security_column_hidden_reason(column, rows, show_transfers))
-        for column in SECURITY_COLUMNS
-    ]
+def show_securities(
+    console: Console, rows: Sequence[SecurityRow], totals: SecurityTotals, show_transfers: bool,
+) -> None:
+    """展示证券明细、合计及隐藏列说明。"""
+    records = [security_cells(row) for row in rows]
+    decisions = [(column, hidden_reason(column, records, show_transfers)) for column in SECURITY_COLUMNS]
     columns = tuple(column for column, reason in decisions if reason is None)
-    print_table(console, columns, rows, title="按证券汇总及交易手续费明细", total=totals)
-    hidden: list[tuple[str, str]] = []
-    for column, reason in decisions:
-        if reason is not None:
-            hidden.append((column.name, reason))
+    print_table(console, columns, records, title="按证券汇总及交易手续费明细", total=security_cells(totals))
+    hidden = [(column.title, reason) for column, reason in decisions if reason is not None]
     if hidden:
         console.print(hidden_columns_note(hidden), style="dim", markup=False, soft_wrap=True)
 
 
-def show_unknown(console: Console, entries: list[Entry]) -> None:
-    """列出尚未纳入核算的流水及其文件位置。"""
-    columns = (DisplayColumn("来源"), DisplayColumn("平台"), DisplayColumn("日期"), DisplayColumn("业务"),
-               DisplayColumn("代码", "cyan"), DisplayColumn("数量", "blue", number=True), DisplayColumn("金额", "magenta", change=True))
-    rows = [{"来源": entry.location, "平台": entry.platform.name, "日期": entry.date, "业务": entry.business,
-             "代码": entry.stock_code, "数量": entry.quantity, "金额": entry.amount} for entry in entries]
+def show_overview(console: Console, rows: tuple[OverviewRow, ...]) -> None:
+    """为已计算的概览指标应用标题和金融颜色。"""
+    records = []
+    for row in rows:
+        column = OVERVIEW_COLUMNS[row.key]
+        records.append({
+            "item": Text(column.title, style=column.style),
+            "amount": column.format(row.amount), "notes": Text(row.note),
+        })
+    columns = (DisplayColumn("item", "项目", align="left"), DisplayColumn("amount", "金额（元）"),
+               DisplayColumn("notes", "备注", align="left"))
+    print_table(console, columns, records)
+
+
+def show_unknown(console: Console, entries: tuple[Entry, ...]) -> None:
+    """展示待确认流水，包括未披露的数量及来源位置。"""
+    columns = (
+        DisplayColumn("source", "来源", align="left"), DisplayColumn("platform", "平台", align="left"),
+        DisplayColumn("date", "日期", align="left"), DisplayColumn("business", "业务", align="left"),
+        DisplayColumn("code", "代码", "cyan", align="left"),
+        DisplayColumn("quantity", "数量", "blue", number=True),
+        DisplayColumn("amount", "金额", "magenta", change=True),
+    )
+    rows = [{"source": entry.location, "platform": entry.platform.name, "date": entry.date,
+             "business": entry.business, "code": entry.stock_code,
+             "quantity": entry.quantity, "amount": entry.amount} for entry in entries]
     print_table(console, columns, rows, title="待确认流水：未纳入收益与净投入，报告不完整")
 
 
-def render_report(
-    console: Console, entries: list[Entry], report: Report, files_count: int, duplicates: int,
-) -> bool:
-    """展示完整报告，并返回是否存在无法确定的核算结果。"""
-    rows, totals = report_rows(report)
-    incomplete = bool(report.unknown) or any(
-        not s.cost_known or not s.transfer_known for s in report.securities.values()
-    )
-    platforms = {entry.platform.name: entry.platform for entry in entries}
+def render_report(console: Console, view: ReportView) -> None:
+    """排版完整报告，完整性和退出状态由调用方处理。"""
+    metadata = view.metadata
     console.print(
-        f"历史收益 · {'、'.join(platforms)} · {entries[0].date}—{entries[-1].date} · "
-        f"{len(entries)} 条流水 · {files_count} 个文件", markup=False, soft_wrap=True,
+        f"历史收益 · {'、'.join(metadata.platforms)} · {metadata.start_date}—{metadata.end_date} · "
+        f"{metadata.entries_count} 条流水 · {metadata.files_count} 个文件", markup=False, soft_wrap=True,
     )
-    if duplicates:
-        console.print(f"已去除跨文件重复流水 {duplicates} 条。", soft_wrap=True)
-    show_overview(console, report, totals, incomplete)
-    show_securities(console, rows, totals, any(s.transfer_count for s in report.securities.values()))
-    notes = [
-        "收益采用移动加权成本，不计算浮盈浮亏；费用已包含于净收付款。",
-        "账户净投入包含托管净转入；其余计算口径见项目文档。",
-    ]
-    if len(platforms) > 1:
-        notes.append("各平台分别核算后按证券汇总，跨平台托管转移不另作抵消。")
-    notes.extend(dict.fromkeys(note for platform in platforms.values() for note in platform.notes))
-    for note in notes:
+    if metadata.duplicates:
+        console.print(f"已去除跨文件重复流水 {metadata.duplicates} 条。", soft_wrap=True)
+    show_overview(console, view.overview)
+    show_securities(console, view.securities, view.totals, view.show_transfers)
+    for note in metadata.notes:
         console.print(note, markup=False, soft_wrap=True)
-    if report.unknown:
-        show_unknown(console, report.unknown)
-    if incomplete:
-        console.print("报告不完整：存在未知业务、成本或托管成交金额缺失；— 表示无法确定，合计仅包含已知项。", style="yellow", soft_wrap=True)
-    return incomplete
+    if view.unknown:
+        show_unknown(console, view.unknown)
+    if view.incomplete:
+        console.print("报告不完整：存在未知业务、成本或托管成交金额缺失；— 表示无法确定，合计仅包含已知项。",
+                      style="yellow", soft_wrap=True)

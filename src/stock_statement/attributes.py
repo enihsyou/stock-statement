@@ -35,7 +35,6 @@ class FinancialAttribute[T]:
     parse: Callable[[str], T] | None = None
     default: T | None = None
     required: bool = False
-    style: str = "cyan"
 
     def read(self, value: str) -> T | None:
         """转换单元格，保留未披露值与数值零的区别。"""
@@ -55,11 +54,11 @@ NAME = FinancialAttribute("证券名称", default="")
 CURRENCY = FinancialAttribute("币种", required=True)
 SERIAL = FinancialAttribute("流水号", default="")
 TRANSACTION_ID = FinancialAttribute("合同编号", default="")
-QUANTITY = FinancialAttribute("成交数量", decimal, style="blue")
-TRADE_AMOUNT = FinancialAttribute("成交金额", decimal, style="blue")
-PRICE = FinancialAttribute("成交价格", decimal, style="blue")
-CASH_AMOUNT = FinancialAttribute("发生金额", decimal, required=True, style="magenta")
-FEES = tuple(FinancialAttribute(name, decimal, ZERO, style="yellow")
+QUANTITY = FinancialAttribute("成交数量", decimal)
+TRADE_AMOUNT = FinancialAttribute("成交金额", decimal)
+PRICE = FinancialAttribute("成交价格", decimal)
+CASH_AMOUNT = FinancialAttribute("发生金额", decimal, required=True)
+FEES = tuple(FinancialAttribute(name, decimal, ZERO)
              for name in ("印花税", "佣金", "经手费", "证管费", "结算费", "过户费", "其他费用"))
 FEE_COLUMNS = tuple(attribute.name for attribute in FEES)
 ATTRIBUTES = (DATE, SETTLEMENT_DATE, TIME, BUSINESS, CODE, NAME, CURRENCY,

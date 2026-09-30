@@ -32,10 +32,10 @@ def test_moving_average_cost_dividends_and_tax():
         entry("股息红利税补缴", amount="-20", serial="5"),
     ])
     stock = report.securities["000000"]
-    assert stock.quantity == D(150)
-    assert stock.cost == D("2257.50")
-    assert stock.realized == D("242.50")
-    assert stock.distributions == D(80)
+    assert stock.holding.quantity == D(150)
+    assert stock.holding.cost == D("2257.50")
+    assert stock.holding.realized == D("242.50")
+    assert stock.holding.distributions == D(80)
     assert stock.profit == D("322.50")
     assert stock.trades == 3
     assert report.security_turnover == D(4005)
@@ -50,8 +50,8 @@ def test_full_sale_removes_all_cost():
         entry("证券卖出", "-2", "80", serial="3"),
     ])
     stock = report.securities["000000"]
-    assert stock.quantity == stock.cost == 0
-    assert stock.realized == D(20)
+    assert stock.holding.quantity == stock.holding.cost == 0
+    assert stock.holding.realized == D(20)
 
 
 def test_transfer_in_and_out_track_value_and_cost():
@@ -60,19 +60,19 @@ def test_transfer_in_and_out_track_value_and_cost():
         entry("转托转出", "-40", trade_amount="600", serial="2"),
     ])
     stock = report.securities["000000"]
-    assert stock.quantity == D(60)
-    assert stock.cost == D(600)
-    assert stock.transfer_net == D(400)
-    assert stock.realized == D(200)
-    assert stock.transfer_count == 2
-    assert stock.cost_known and stock.transfer_known
+    assert stock.holding.quantity == D(60)
+    assert stock.holding.cost == D(600)
+    assert stock.holding.transfer_net == D(400)
+    assert stock.holding.realized == D(200)
+    assert stock.holding.transfer_count == 2
+    assert stock.holding.cost_known and stock.holding.transfer_known
 
 
 def test_transfer_without_value_marks_cost_unknown():
     stock = analyze([entry("转托转入", "100")]).securities["000000"]
-    assert stock.quantity == 100
-    assert not stock.cost_known
-    assert not stock.transfer_known
+    assert stock.holding.quantity == 100
+    assert not stock.holding.cost_known
+    assert not stock.holding.transfer_known
 
 
 def test_repo_principal_interest_and_cash_settlement():
@@ -84,8 +84,8 @@ def test_repo_principal_interest_and_cash_settlement():
         entry("交收资金修正", amount="1003", security=None, platform=platform, serial="3"),
     ])
     stock = report.securities["000000"]
-    assert stock.repo_principal == stock.repo_quantity == 0
-    assert stock.realized == D(2)
+    assert stock.repo.principal == stock.repo.quantity == 0
+    assert stock.profit == D(2)
     assert report.security_turnover == 0
     assert report.adjustment == D(1003)
     assert not report.unknown
@@ -116,9 +116,9 @@ def test_platform_costs_are_calculated_before_combining():
         entry("证券卖出", "-100", "1500", platform=PLATFORMS[0], serial="3"),
     ])
     stock = report.securities["000000"]
-    assert stock.quantity == 100
-    assert stock.cost == 2000
-    assert stock.realized == 500
+    assert stock.holding.quantity == 100
+    assert stock.holding.cost == 2000
+    assert stock.holding.realized == 500
 
 
 def test_registration_with_fees_does_not_cancel_free_counterpart():

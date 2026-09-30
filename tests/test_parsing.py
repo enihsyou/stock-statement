@@ -71,7 +71,7 @@ def test_cash_statement_can_omit_security_and_trade_columns(tmp_path):
     path = write_statement(tmp_path / "现金.txt", list(values), [values])
     record, = read_entries(path)
     assert record.stock_code == record.stock_name == ""
-    assert record.quantity == 0
+    assert record.quantity is None
     assert record.trade_amount is record.trade_price is None
 
 

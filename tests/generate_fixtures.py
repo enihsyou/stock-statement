@@ -43,7 +43,7 @@ def statement_rows():
             row(2, "证券买入", "-2005", security=0, quantity="100", commission="5"),
             row(3, "证券卖出", "2193", security=0, quantity="-100", commission="5", stamp="2"),
             row(4, "融券回购", "-1001", security=2, quantity="10", commission="1"),
-            row(5, "融券购回", "1004", security=2, quantity="-10"),
+            row(4, "融券购回", "1004", security=2, quantity="-10"),
             row(6, "融券回购", "-1001", security=2, quantity="10", commission="1"),
             row(7, "利息归本", "2"),
             row(8, "证券转银行", "-500"),

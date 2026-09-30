@@ -3,6 +3,7 @@
 from collections import Counter
 from pathlib import Path
 
+from .errors import ParsingError, StatementError
 from .models import Entry, entry_sort_key
 from .parsing import parse_entries
 
@@ -14,27 +15,37 @@ def expand_paths(paths: list[Path]) -> list[Path]:
         if not path.is_dir():
             files.append(path)
             continue
-        children = sorted(
-            (child for child in path.iterdir() if child.is_file() and child.suffix.lower() == ".txt"),
-            key=lambda child: (child.name.casefold(), child.name),
-        )
+        try:
+            children = sorted(
+                (child for child in path.iterdir() if child.is_file() and child.suffix.lower() == ".txt"),
+                key=lambda child: (child.name.casefold(), child.name),
+            )
+        except OSError as exc:
+            raise StatementError(f"无法读取目录：{exc}", source=str(path)) from exc
         if not children:
-            raise ValueError(f"目录内没有文本文件：{path}")
+            raise StatementError("目录内没有文本文件", source=str(path))
         files.extend(children)
     return files
 
 
 def read_entries(path: Path) -> list[Entry]:
     """读取 UTF-8 或 GB18030 导出的单份资金流水。"""
-    raw = path.read_bytes()
+    try:
+        raw = path.read_bytes()
+    except OSError as exc:
+        raise StatementError(f"无法读取文件：{exc}", source=str(path)) from exc
     try:
         content = raw.decode("utf-8-sig")
     except UnicodeDecodeError:
-        content = raw.decode("gb18030")
+        try:
+            content = raw.decode("gb18030")
+        except UnicodeDecodeError as exc:
+            number = raw[:exc.start].count(b"\n") + 1
+            raise ParsingError("文件无法按 UTF-8 或 GB18030 解码", source=str(path), line=number) from exc
     return parse_entries(content, str(path))
 
 
-def entry_identity(entry: Entry) -> tuple:
+def entry_identity(entry: Entry) -> tuple[str, str, str, str | None, str | None]:
     """用平台、原始日期、交易行为及编号识别跨文件重复流水。"""
     return (entry.platform.name, entry.original_date, entry.business,
             entry.transaction_id or None, entry.serial or None)
@@ -56,5 +67,5 @@ def read_files(paths: list[Path]) -> tuple[list[Entry], int]:
                 entries.append(entry)
         seen |= occurrences
     if not entries:
-        raise ValueError("没有输入流水文件")
+        raise StatementError("没有输入流水文件")
     return sorted(entries, key=entry_sort_key), duplicates

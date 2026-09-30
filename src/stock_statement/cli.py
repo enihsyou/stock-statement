@@ -5,9 +5,11 @@ from pathlib import Path
 
 from rich.console import Console
 
+from .errors import StatementError
 from .ledger import analyze
 from .loading import expand_paths, read_files
 from .presentation import render_report
+from .reporting import build_report_view
 
 
 def earnings(args: argparse.Namespace) -> None:
@@ -17,11 +19,12 @@ def earnings(args: argparse.Namespace) -> None:
         files = expand_paths(args.files)
         entries, duplicates = read_files(files)
         report = analyze(entries)
-        incomplete = render_report(console, entries, report, len(files), duplicates)
-    except (OSError, ValueError, ArithmeticError) as exc:
-        console.print(f"无法生成报告：{exc}", style="red", markup=False, soft_wrap=True)
+        view = build_report_view(entries, report, len(files), duplicates)
+    except StatementError as exc:
+        Console(stderr=True).print(f"无法生成报告：{exc}", style="red", markup=False, soft_wrap=True)
         raise SystemExit(2) from exc
-    if incomplete:
+    render_report(console, view)
+    if view.incomplete:
         raise SystemExit(1)
 
 

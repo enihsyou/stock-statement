@@ -6,7 +6,8 @@ from io import StringIO
 from rich.console import Console
 
 from stock_statement.ledger import analyze
-from stock_statement.presentation import render_report, report_rows, show_securities
+from stock_statement.presentation import render_report, show_securities
+from stock_statement.reporting import build_report_view, build_security_rows
 from tests.test_ledger import entry
 
 
@@ -23,10 +24,10 @@ def report_entries():
 def security_table(records):
     """只渲染证券汇总表，避免概览中的同名项目干扰列断言。"""
     report = analyze(records)
-    rows, totals = report_rows(report)
+    rows, totals = build_security_rows(report)
     output = StringIO()
     console = Console(file=output, width=40, force_terminal=False)
-    show_transfers = any(stock.transfer_count for stock in report.securities.values())
+    show_transfers = any(stock.holding.transfer_count for stock in report.securities.values())
     show_securities(console, rows, totals, show_transfers)
     return output.getvalue()
 
@@ -50,7 +51,7 @@ def test_overview_shows_account_investment_and_trading_summary():
     records = report_entries()
     output = StringIO()
     console = Console(file=output, width=40, force_terminal=False)
-    render_report(console, records, analyze(records), files_count=1, duplicates=0)
+    render_report(console, build_report_view(records, analyze(records), files_count=1, duplicates=0))
     text = output.getvalue()
     for value in ("账户净投入", "其中：现金净投入", "证券交易总额",
                   "其中：佣金", "证券持仓成本", "占交易总额"):
@@ -77,7 +78,7 @@ def test_terminal_profit_uses_red_and_loss_uses_green():
     records = report_entries()
     output = StringIO()
     console = Console(file=output, width=300, force_terminal=True, color_system="standard")
-    render_report(console, records, analyze(records), files_count=1, duplicates=0)
+    render_report(console, build_report_view(records, analyze(records), files_count=1, duplicates=0))
     text = output.getvalue()
     assert re.search(r"\x1b\[[\d;]*31m\s*200\.00", text)
     assert re.search(r"\x1b\[[\d;]*32m\s*-100\.00", text)

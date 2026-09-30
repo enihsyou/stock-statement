@@ -1,11 +1,12 @@
 """流水、证券持仓与账户报告的统一数据模型。"""
 
-from collections import Counter, defaultdict
+from collections import Counter
 from dataclasses import dataclass, field
 from decimal import Decimal
 
-from .attributes import SERIAL, TRANSACTION_ID, ZERO
-from .platforms import Platform
+from .attributes import QUANTITY, ZERO
+from .errors import AccountingError
+from .platforms import Platform, RepoIdentifier
 
 
 @dataclass
@@ -22,8 +23,8 @@ class Entry:
     """证券代码，保留前导零；无关联证券的资金业务为空字符串。"""
     stock_name: str
     """流水披露的证券名称，用于展示；未披露时为空字符串。"""
-    quantity: Decimal
-    """成交或变动数量；卖出、购回及转托转出统一为负数，逆回购单位由平台规则解释。"""
+    quantity: Decimal | None
+    """成交或变动数量；未披露时为 None，卖出、购回及转托转出统一为负数。"""
     amount: Decimal
     """人民币发生金额，正数表示收款、负数表示付款；交易净收付款已包含手续费。"""
     serial: str
@@ -53,7 +54,17 @@ class Entry:
     @property
     def repo_identifier(self) -> str:
         """按平台规则提取拆出与购回共用的逆回购编号。"""
-        return {TRANSACTION_ID: self.transaction_id, SERIAL: self.serial}[self.platform.repo_identifier]
+        if self.platform.repo_identifier is RepoIdentifier.TRANSACTION_ID:
+            return self.transaction_id
+        return self.serial
+
+    def require_quantity(self) -> Decimal:
+        """为需要数量的业务提供已披露或已推算的数量。"""
+        if self.quantity is None:
+            names = self.platform.column_names(QUANTITY)
+            raise AccountingError.for_entry(self, "缺少成交数量，且无法由成交金额和价格推算",
+                                            " / ".join(names) if names else QUANTITY.name)
+        return self.quantity
 
 
 def entry_sort_key(entry: Entry) -> tuple:
@@ -62,67 +73,82 @@ def entry_sort_key(entry: Entry) -> tuple:
     return entry.date, entry.time, serial, entry.line
 
 
-@dataclass
-class RepoPosition:
-    """保存未购回合同的本金、数量、拆出费用与本金加权报价。"""
+@dataclass(frozen=True)
+class HoldingSummary:
+    """保存证券买卖、分红和托管核算的不可变结果。"""
 
-    identifier: str
+    quantity: Decimal
+    cost: Decimal
+    realized: Decimal
+    distributions: Decimal
+    transfer_net: Decimal
+    transfer_count: int
+    transfer_known: bool
+    cost_known: bool
+    trades: int
+
+
+@dataclass(frozen=True)
+class RepoSummary:
+    """保存逆回购余额及收益指标，不携带未结清合同。"""
+
     principal: Decimal
     quantity: Decimal
+    profit: Decimal
     fees: Decimal
-    quoted_interest: Decimal
-    price_known: bool
+    completed_profit: Decimal
+    capital_days: Decimal
+    completed_count: int
+    rate_known: bool
+    trades: int
 
 
-@dataclass
-class Security:
-    """累计单只证券的持仓成本、收益和费用。"""
+@dataclass(frozen=True)
+class SecuritySummary:
+    """组合单只证券的核算摘要，供跨券商汇总和报告使用。"""
 
-    name: str = ""
-    quantity: Decimal = ZERO
-    cost: Decimal = ZERO
-    realized: Decimal = ZERO
-    distributions: Decimal = ZERO
-    transfer_net: Decimal = ZERO
-    transfer_count: int = 0
-    transfer_known: bool = True
-    repo_principal: Decimal = ZERO
-    repo_quantity: Decimal = ZERO
-    repo_profit: Decimal = ZERO
-    repo_fees: Decimal = ZERO
-    repo_completed_profit: Decimal = ZERO
-    repo_capital_days: Decimal = ZERO
-    repo_completed_count: int = 0
-    repo_rate_known: bool = True
-    repo_positions: list[RepoPosition] = field(default_factory=list)
-    cost_known: bool = True
-    cash_change: Decimal = ZERO
-    trades: int = 0
-    fees: dict[str, Decimal] = field(default_factory=lambda: defaultdict(Decimal))
+    name: str
+    holding: HoldingSummary
+    repo: RepoSummary
+    cash_change: Decimal
+    fees: dict[str, Decimal]
 
     @property
     def profit(self) -> Decimal:
         """返回包含分红及红利税的已实现净收益。"""
-        return self.realized + self.distributions
+        return self.holding.realized + self.holding.distributions + self.repo.profit
+
+    @property
+    def trades(self) -> int:
+        """返回证券买卖与逆回购拆出的流水笔数。"""
+        return self.holding.trades + self.repo.trades
 
 
 @dataclass
 class Report:
     """汇集证券核算、账户资金及尚未识别的业务。"""
 
-    securities: dict[str, Security] = field(default_factory=dict)
+    securities: dict[str, SecuritySummary] = field(default_factory=dict)
     inflow: Decimal = ZERO
     outflow: Decimal = ZERO
     interest: Decimal = ZERO
     adjustment: Decimal = ZERO
     security_turnover: Decimal = ZERO
     repo_turnover: Decimal = ZERO
-    fees: dict[str, Decimal] = field(default_factory=lambda: defaultdict(Decimal))
+    fees: dict[str, Decimal] = field(default_factory=dict)
     unknown: list[Entry] = field(default_factory=list)
-    businesses: Counter = field(default_factory=Counter)
+    businesses: Counter[str] = field(default_factory=Counter)
 
     @property
     def turnover(self) -> Decimal:
         """返回证券买卖与逆回购拆出的交易总额。"""
         return self.security_turnover + self.repo_turnover
+
+    @property
+    def incomplete(self) -> bool:
+        """判断收益或投入是否存在未知部分，不包含年化报价缺失。"""
+        return bool(self.unknown) or any(
+            not security.holding.cost_known or not security.holding.transfer_known
+            for security in self.securities.values()
+        )
 

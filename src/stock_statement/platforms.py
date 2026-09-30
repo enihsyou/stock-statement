@@ -2,10 +2,25 @@
 
 from dataclasses import dataclass, field
 from decimal import Decimal
+from enum import Enum
+from typing import Any
 
 from .attributes import (
-    BUSINESS, DATE, PRICE, SERIAL, SETTLEMENT_DATE, TRANSACTION_ID, FinancialAttribute,
+    ATTRIBUTES,
+    BUSINESS,
+    DATE,
+    PRICE,
+    SETTLEMENT_DATE,
+    TRANSACTION_ID,
+    FinancialAttribute,
 )
+
+
+class RepoIdentifier(Enum):
+    """限定券商披露的逆回购配对编号来源。"""
+
+    TRANSACTION_ID = "transaction_id"
+    SERIAL = "serial"
 
 
 @dataclass(frozen=True)
@@ -15,13 +30,30 @@ class Platform:
     name: str
     identifiers: frozenset[str]
     repo_units: tuple[tuple[str, Decimal], ...]
-    columns: dict[FinancialAttribute, tuple[str, ...]] = field(default_factory=dict)
+    columns: dict[FinancialAttribute[Any], tuple[str, ...]] = field(default_factory=dict)
     businesses: dict[str, str] = field(default_factory=dict)
-    repayment_date: FinancialAttribute = DATE
-    repo_identifier: FinancialAttribute = TRANSACTION_ID
+    repayment_date: FinancialAttribute[str] = DATE
+    repo_identifier: RepoIdentifier = RepoIdentifier.TRANSACTION_ID
     notes: tuple[str, ...] = ()
 
-    def column_names(self, attribute: FinancialAttribute) -> tuple[str, ...]:
+    def __post_init__(self) -> None:
+        if not self.identifiers:
+            raise ValueError(f"{self.name}：平台识别列不能为空")
+        if self.repayment_date not in (DATE, SETTLEMENT_DATE):
+            raise ValueError(f"{self.name}：购回核算日期必须为成交日期或交收日期")
+        if not isinstance(self.repo_identifier, RepoIdentifier):
+            raise ValueError(f"{self.name}：逆回购编号必须为交易编号或流水号")
+        if any(attribute not in ATTRIBUTES for attribute in self.columns):
+            raise ValueError(f"{self.name}：列映射包含未定义的金融属性")
+        if any(not self.column_names(attribute) for attribute in ATTRIBUTES if attribute.required):
+            raise ValueError(f"{self.name}：必需属性不能配置为不披露")
+        prefixes = [prefix for prefix, _ in self.repo_units]
+        if len(prefixes) != len(set(prefixes)) or any(
+            not prefix or not unit.is_finite() or unit <= 0 for prefix, unit in self.repo_units
+        ):
+            raise ValueError(f"{self.name}：逆回购前缀须唯一且单位须为正的有限数值")
+
+    def column_names(self, attribute: FinancialAttribute[Any]) -> tuple[str, ...]:
         """返回当前平台中某个金融属性可匹配的列名。"""
         return self.columns.get(attribute, (attribute.name,))
 
@@ -53,7 +85,7 @@ PLATFORMS = (
                     "融券回购": "质押回购拆出", "融券购回": "拆出质押购回",
                     "转托管入": "转托转入", "转托管出": "转托转出"},
         repayment_date=SETTLEMENT_DATE,
-        repo_identifier=SERIAL,
+        repo_identifier=RepoIdentifier.SERIAL,
         notes=("东方财富未单列经手费、证管费、结算费，显示 0 表示无独立披露金额；其他费用保留原值。",),
     ),
 )
@@ -63,5 +95,5 @@ def identify_platform(columns: set[str]) -> Platform | None:
     """从表头识别唯一平台，非表头行返回空值。"""
     matches = [platform for platform in PLATFORMS if platform.identifiers <= columns]
     if len(matches) > 1:
-        raise ValueError("表头匹配多个平台")
+        raise ValueError(f"表头匹配多个平台：{'、'.join(platform.name for platform in matches)}")
     return matches[0] if matches else None

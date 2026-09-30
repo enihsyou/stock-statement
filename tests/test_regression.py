@@ -16,9 +16,9 @@ def overview(report):
         return sum((value.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
                     for value in values), Decimal(0))
 
-    transfer = sum_money(stock.transfer_net for stock in stocks)
-    principal = sum_money(stock.repo_principal for stock in stocks)
-    unassigned = {name: amount - sum((stock.fees[name] for stock in stocks), Decimal(0))
+    transfer = sum_money(stock.holding.transfer_net for stock in stocks)
+    principal = sum_money(stock.repo.principal for stock in stocks)
+    unassigned = {name: amount - sum((stock.fees.get(name, Decimal(0)) for stock in stocks), Decimal(0))
                   for name, amount in report.fees.items()}
     fee_rows = [stock.fees for stock in stocks]
     if any(unassigned.values()):
@@ -33,7 +33,7 @@ def overview(report):
         "其中：资金利息": report.interest,
         "交易手续费合计": sum_money(sum(fees.values(), Decimal(0)) for fees in fee_rows),
         "其中：印花税": sum_money(fees.get("印花税", Decimal(0)) for fees in fee_rows),
-        "剩余成本": sum_money(stock.cost + stock.repo_principal for stock in stocks),
+        "剩余成本": sum_money(stock.holding.cost + stock.repo.principal for stock in stocks),
         "其中：逆回购本金": principal,
         "逆回购交收记录": report.adjustment,
     }

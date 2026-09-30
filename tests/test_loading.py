@@ -40,12 +40,12 @@ def test_directory_report_counts_files_and_preserves_duplicate_occurrences(tmp_p
     }
     write_statement(tmp_path / "一.txt", list(values), [values, values])
     write_statement(tmp_path / "二.TXT", list(values), [values])
-    render = Mock(return_value=False)
+    render = Mock()
     monkeypatch.setattr(cli, "render_report", render)
 
     cli.earnings(Namespace(files=[tmp_path]))
 
-    _, entries, _, file_count, duplicates = render.call_args.args
-    assert len(entries) == 2
-    assert file_count == 2
-    assert duplicates == 1
+    _, view = render.call_args.args
+    assert view.metadata.entries_count == 2
+    assert view.metadata.files_count == 2
+    assert view.metadata.duplicates == 1
