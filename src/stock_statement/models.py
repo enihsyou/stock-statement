@@ -4,7 +4,7 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass, field
 from decimal import Decimal
 
-from .attributes import ZERO
+from .attributes import SERIAL, TRANSACTION_ID, ZERO
 from .platforms import Platform
 
 
@@ -50,11 +50,28 @@ class Entry:
         """返回可追溯至原文件行的描述。"""
         return f"{self.source} 第 {self.line} 行"
 
+    @property
+    def repo_identifier(self) -> str:
+        """按平台规则提取拆出与购回共用的逆回购编号。"""
+        return {TRANSACTION_ID: self.transaction_id, SERIAL: self.serial}[self.platform.repo_identifier]
+
 
 def entry_sort_key(entry: Entry) -> tuple:
     """按核算日期、时间和原始编号稳定排列流水。"""
     serial = (0, int(entry.serial)) if entry.serial.isdecimal() else (1, entry.serial)
     return entry.date, entry.time, serial, entry.line
+
+
+@dataclass
+class RepoPosition:
+    """保存未购回合同的本金、数量、拆出费用与本金加权报价。"""
+
+    identifier: str
+    principal: Decimal
+    quantity: Decimal
+    fees: Decimal
+    quoted_interest: Decimal
+    price_known: bool
 
 
 @dataclass
@@ -71,6 +88,13 @@ class Security:
     transfer_known: bool = True
     repo_principal: Decimal = ZERO
     repo_quantity: Decimal = ZERO
+    repo_profit: Decimal = ZERO
+    repo_fees: Decimal = ZERO
+    repo_completed_profit: Decimal = ZERO
+    repo_capital_days: Decimal = ZERO
+    repo_completed_count: int = 0
+    repo_rate_known: bool = True
+    repo_positions: list[RepoPosition] = field(default_factory=list)
     cost_known: bool = True
     cash_change: Decimal = ZERO
     trades: int = 0
@@ -92,7 +116,13 @@ class Report:
     interest: Decimal = ZERO
     adjustment: Decimal = ZERO
     security_turnover: Decimal = ZERO
+    repo_turnover: Decimal = ZERO
     fees: dict[str, Decimal] = field(default_factory=lambda: defaultdict(Decimal))
     unknown: list[Entry] = field(default_factory=list)
     businesses: Counter = field(default_factory=Counter)
+
+    @property
+    def turnover(self) -> Decimal:
+        """返回证券买卖与逆回购拆出的交易总额。"""
+        return self.security_turnover + self.repo_turnover
 

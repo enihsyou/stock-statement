@@ -1,10 +1,10 @@
 """按账户核算移动加权成本并合并证券历史收益。"""
 
 from collections import Counter, defaultdict
-from decimal import Decimal
+from decimal import ROUND_CEILING, ROUND_HALF_UP, Decimal
 
 from .attributes import ZERO
-from .models import Entry, Report, Security, entry_sort_key
+from .models import Entry, Report, RepoPosition, Security, entry_sort_key
 
 
 def remove_cost(security: Security, quantity: Decimal, entry: Entry) -> Decimal:
@@ -48,26 +48,106 @@ def apply_security(security: Security, entry: Entry) -> bool:
 
 
 def apply_repo(security: Security, entry: Entry) -> None:
-    """按平台数量单位核算逆回购本金、费用和购回收益。"""
+    """按合同核销逆回购本金，并分别累计费用、收益和计息本金。"""
     unit = entry.platform.repo_quantity_unit(entry.stock_code)
-    amount = entry.amount
+    fees = sum(entry.fees.values(), ZERO)
+    principal = abs(entry.quantity) * unit
     if entry.business == "质押回购拆出":
-        fees = sum(entry.fees.values(), ZERO)
-        if amount >= 0 or -amount < fees:
+        if entry.amount >= 0 or principal <= ZERO or -entry.amount - fees != principal:
             raise ValueError(f"{entry.location} 逆回购拆出金额异常")
-        security.repo_principal += -amount - fees
+        add_repo_position(security, entry, principal, fees)
+        security.repo_principal += principal
         security.repo_quantity += abs(entry.quantity)
         security.realized -= fees
+        security.repo_profit -= fees
+        security.repo_fees += fees
         security.trades += 1
+        return
+    settle_repo_position(security, entry, principal, fees)
+
+
+def add_repo_position(security: Security, entry: Entry, principal: Decimal, fees: Decimal) -> None:
+    """将同一合同的拆出成交合并，缺少编号的成交独立保留。"""
+    price_known = entry.trade_price is not None and entry.trade_price > ZERO
+    quoted_interest = principal * (entry.trade_price or ZERO) / Decimal(100) if price_known else ZERO
+    identifier = entry.repo_identifier
+    position = next((p for p in security.repo_positions
+                     if identifier and p.identifier == identifier), None)
+    if position is None:
+        security.repo_positions.append(RepoPosition(
+            identifier, principal, abs(entry.quantity), fees, quoted_interest, price_known,
+        ))
+        return
+    position.principal += principal
+    position.quantity += abs(entry.quantity)
+    position.fees += fees
+    position.quoted_interest += quoted_interest
+    position.price_known &= price_known
+
+
+def match_repo_position(security: Security, entry: Entry, principal: Decimal) -> RepoPosition:
+    """优先按合同匹配，仅对双方无编号且本金数量唯一的记录推断配对。"""
+    identifier = entry.repo_identifier
+    if identifier:
+        matches = [p for p in security.repo_positions if p.identifier == identifier]
     else:
-        principal = abs(entry.quantity) * unit
-        if principal > security.repo_principal:
-            raise ValueError(
-                f"{entry.location} 逆回购购回本金超出历史拆出本金，需要更早的流水。"
-            )
-        security.repo_principal -= principal
-        security.repo_quantity -= abs(entry.quantity)
-        security.realized += amount - principal
+        matches = [p for p in security.repo_positions
+                   if not p.identifier and p.principal == principal
+                   and p.quantity == abs(entry.quantity)]
+    if len(matches) != 1:
+        raise ValueError(
+            f"{entry.location} 逆回购购回无法唯一匹配拆出合同"
+            f"（{entry.platform.repo_identifier.name} {identifier or '未披露'}）；请补充对应拆出流水。"
+        )
+    position = matches[0]
+    if principal <= ZERO or principal > position.principal or abs(entry.quantity) > position.quantity:
+        raise ValueError(f"{entry.location} 逆回购购回本金或数量超出对应合同的未购回余额")
+    return position
+
+
+def repo_interest_days(interest: Decimal, quoted_interest: Decimal) -> int | None:
+    """反推整数计息天数，仅接受分位舍入后唯一吻合的结果。"""
+    if interest < ZERO or quoted_interest <= ZERO:
+        return None
+    lower = (interest - Decimal("0.005")) * Decimal(365) / quoted_interest
+    upper = (interest + Decimal("0.005")) * Decimal(365) / quoted_interest
+    first = max(1, int(lower.to_integral_value(rounding=ROUND_CEILING)))
+    last = int(upper.to_integral_value(rounding=ROUND_CEILING)) - 1
+    if first != last:
+        return None
+    calculated = (quoted_interest * first / Decimal(365)).quantize(
+        Decimal("0.01"), rounding=ROUND_HALF_UP,
+    )
+    return first if calculated == interest else None
+
+
+def settle_repo_position(security: Security, entry: Entry, principal: Decimal, fees: Decimal) -> None:
+    """按购回比例分摊拆出费用，核销合同并累计已完成交易的年化分母。"""
+    if entry.amount <= ZERO:
+        raise ValueError(f"{entry.location} 逆回购购回金额方向异常")
+    position = match_repo_position(security, entry, principal)
+    fraction = principal / position.principal
+    opening_fees = position.fees * fraction
+    quoted_interest = position.quoted_interest * fraction
+    profit = entry.amount - principal
+    interest = profit + fees
+    days = repo_interest_days(interest, quoted_interest) if position.price_known else None
+    security.repo_rate_known &= days is not None
+    if days is not None:
+        security.repo_capital_days += principal * days
+    security.repo_completed_count += 1
+    security.repo_completed_profit += profit - opening_fees
+    security.repo_profit += profit
+    security.repo_fees += fees
+    security.realized += profit
+    security.repo_principal -= principal
+    security.repo_quantity -= abs(entry.quantity)
+    position.principal -= principal
+    position.quantity -= abs(entry.quantity)
+    position.fees -= opening_fees
+    position.quoted_interest -= quoted_interest
+    if not position.principal:
+        security.repo_positions.remove(position)
 
 
 def apply_transfer(security: Security, entry: Entry) -> None:
@@ -134,6 +214,8 @@ def analyze_platform(entries: list[Entry]) -> Report:
             continue
         if entry.business in {"证券买入", "证券卖出"}:
             report.security_turnover += abs(entry.amount)
+        if entry.business == "质押回购拆出":
+            report.repo_turnover += abs(entry.amount)
         for name, amount in entry.fees.items():
             report.fees[name] += amount
         if consume_registration(entry, remaining_pairs):
@@ -156,10 +238,12 @@ def merge_security(target: Security, source: Security) -> None:
     for name in (
         "quantity", "cost", "realized", "distributions", "transfer_net",
         "transfer_count", "repo_principal", "repo_quantity", "cash_change", "trades",
+        "repo_profit", "repo_fees", "repo_completed_profit", "repo_capital_days", "repo_completed_count",
     ):
         setattr(target, name, getattr(target, name) + getattr(source, name))
     target.cost_known &= source.cost_known
     target.transfer_known &= source.transfer_known
+    target.repo_rate_known &= source.repo_rate_known
     for name, amount in source.fees.items():
         target.fees[name] += amount
 
@@ -172,7 +256,7 @@ def analyze(entries: list[Entry]) -> Report:
     result = Report()
     for batch in groups.values():
         report = analyze_platform(batch)
-        for name in ("inflow", "outflow", "interest", "adjustment", "security_turnover"):
+        for name in ("inflow", "outflow", "interest", "adjustment", "security_turnover", "repo_turnover"):
             setattr(result, name, getattr(result, name) + getattr(report, name))
         result.unknown.extend(report.unknown)
         result.businesses.update(report.businesses)

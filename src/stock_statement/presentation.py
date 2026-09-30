@@ -171,15 +171,27 @@ def report_rows(report: Report) -> tuple[list[dict], dict]:
     return rows, totals
 
 
+def repo_rate_note(report: Report) -> str:
+    """按已完成合同的本金与计息天数加权展示扣费后的年化收益率。"""
+    securities = list(report.securities.values())
+    if not any(s.repo_completed_count for s in securities):
+        return "年化收益率不可计算：无已完成交易"
+    if not all(s.repo_rate_known for s in securities):
+        return "年化收益率不可计算：计息天数无法唯一确定"
+    capital_days = sum((s.repo_capital_days for s in securities), ZERO)
+    profit = sum((s.repo_completed_profit for s in securities), ZERO)
+    return "年化" + rate_text(profit * Decimal(365), capital_days)
+
+
 def show_overview(console: Console, report: Report, totals: dict, incomplete: bool) -> None:
     """显示净投入、已实现收益与剩余成本概览。"""
     fees = sum(report.fees.values(), ZERO)
-    fee_share = ratio_text(fees, report.security_turnover, "交易总额")
+    fee_share = ratio_text(fees, report.turnover, "交易总额")
 
-    def fee_note(name: str) -> str:
-        amount = report.fees[name]
-        return f"{ratio_text(amount, report.security_turnover, '交易总额')}；{ratio_text(amount, fees, '手续费')}"
+    def fee_note(amount: Decimal) -> str:
+        return f"{ratio_text(amount, report.turnover, '交易总额')}；{ratio_text(amount, fees, '手续费')}"
 
+    repo_fees = display_sum(s.repo_fees for s in report.securities.values())
     investment = report.inflow - report.outflow + totals["托管净转入"]
     profit = totals["已实现净收益"] + rounded(report.interest)
     profit_note = ("收益不完整；" if incomplete else "") + rate_text(profit, investment)
@@ -188,11 +200,16 @@ def show_overview(console: Console, report: Report, totals: dict, incomplete: bo
         ("账户净投入", investment, "", "magenta", True),
         ("    其中：现金净投入", report.inflow - report.outflow, "仅银行转账", "magenta", True),
         ("已实现净收益", profit, profit_note, "magenta", True),
-        ("    其中：资金利息", report.interest, "", "magenta", True),
-        ("证券交易总额", report.security_turnover, "证券买卖金额之和，不含逆回购", "blue", False),
+        ("    其中：资金利息", report.interest, rate_text(report.interest, investment), "magenta", True),
+        ("    其中：逆回购净收益", display_sum(s.repo_profit for s in report.securities.values()),
+         repo_rate_note(report), "magenta", True),
+        ("交易总额", report.turnover, "", "blue", False),
+        ("    其中：证券交易总额", report.security_turnover, "证券买卖金额之和，含手续费", "blue", False),
+        ("    其中：逆回购交易总额", report.repo_turnover, "拆出金额之和，含手续费", "blue", False),
         ("交易手续费合计", totals["手续费合计"], fee_share, "yellow", False),
-        ("    其中：印花税", totals["印花税"], fee_note("印花税"), "yellow", False),
-        ("    其中：佣金", totals["佣金"], fee_note("佣金"), "yellow", False),
+        ("    其中：印花税", totals["印花税"], fee_note(report.fees["印花税"]), "yellow", False),
+        ("    其中：佣金", totals["佣金"], fee_note(report.fees["佣金"]), "yellow", False),
+        ("    其中：逆回购手续费", repo_fees, fee_note(repo_fees), "yellow", False),
         ("剩余成本", totals["剩余成本"], cost_note, "blue", False),
         ("    其中：证券持仓成本", display_sum(
             s.cost for s in report.securities.values() if s.cost_known

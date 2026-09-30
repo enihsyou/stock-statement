@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from decimal import Decimal
 
 from .attributes import (
-    BUSINESS, DATE, PRICE, SETTLEMENT_DATE, TRANSACTION_ID, FinancialAttribute,
+    BUSINESS, DATE, PRICE, SERIAL, SETTLEMENT_DATE, TRANSACTION_ID, FinancialAttribute,
 )
 
 
@@ -18,6 +18,7 @@ class Platform:
     columns: dict[FinancialAttribute, tuple[str, ...]] = field(default_factory=dict)
     businesses: dict[str, str] = field(default_factory=dict)
     repayment_date: FinancialAttribute = DATE
+    repo_identifier: FinancialAttribute = TRANSACTION_ID
     notes: tuple[str, ...] = ()
 
     def column_names(self, attribute: FinancialAttribute) -> tuple[str, ...]:
@@ -52,6 +53,7 @@ PLATFORMS = (
                     "融券回购": "质押回购拆出", "融券购回": "拆出质押购回",
                     "转托管入": "转托转入", "转托管出": "转托转出"},
         repayment_date=SETTLEMENT_DATE,
+        repo_identifier=SERIAL,
         notes=("东方财富未单列经手费、证管费、结算费，显示 0 表示无独立披露金额；其他费用保留原值。",),
     ),
 )
