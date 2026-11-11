@@ -1,0 +1,924 @@
+<svg height="610.4" width="1048" xmlns="http://www.w3.org/2000/svg">
+<g transform="translate(32,16)">
+<filter filterUnits="userSpaceOnUse" height="618.4" id="shadow" width="1056" x="-32" y="-24">
+<feGaussianBlur stdDeviation="12"/>
+</filter>
+<rect fill="#000000c0" filter="url(#shadow)" height="546.4" rx="10" ry="10" width="984" x="4" y="12"/>
+<rect fill="#282c34" height="546.4" rx="10" ry="10" width="984"/>
+<clipPath id="header">
+<rect height="28" width="984"/>
+</clipPath>
+<rect clip-path="url(#header)" fill="#383837" height="56" rx="10" ry="10" width="984"/>
+<line stroke="#000000c0" stroke-width="0.5" x1="0" x2="984" y1="28" y2="28"/><text dominant-baseline="central" fill="#b3b3b3" font-family="system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" x="492" y="14">stock-statement earnings</text>
+<g>
+<circle cx="14" cy="14" fill="#ff5f56" r="6" stroke="#ff5f56" stroke-width="0.5"/>
+<circle cx="34" cy="14" fill="#ffbd2e" r="6" stroke="#ffbd2e" stroke-width="0.5"/>
+<circle cx="54" cy="14" fill="#28c941" r="6" stroke="#28c941" stroke-width="0.5"/>
+</g>
+<svg class="terminal" font-family="Maple Mono Normal NF CN, Maple Mono NF CN, JetBrains Maple Mono, JetBrains Mono, Cascadia Code, Cascadia Mono, monospace" font-size="12" height="518.4" width="984" y="28">
+<svg fill="#dcdfe4" x="9.6" y="7.2">
+<g>
+<svg height="504" viewBox="0 0 80.4 42" width="964.8">
+<g stroke-width="0.025"/>
+<g stroke-width="0.025">
+<path d="M0.217,1.717 H45.983 V4.283 H45.942 V23.442 H0.258 V4.283 H0.217 Z M0.342,4.283 V23.358 H16.458 V4.283 Z M0.383,1.883 V4.117 H16.417 V1.883 Z M16.542,4.283 V23.358 H24.258 V4.283 Z M16.583,1.883 V4.117 H24.217 V1.883 Z M24.342,4.283 V23.358 H45.858 V4.283 Z M24.383,1.883 V4.117 H45.817 V1.883 Z M0.217,25.717 H78.983 V28.283 H78.942 V37.842 H0.258 V28.283 H0.217 Z M0.342,28.283 V37.758 H6.858 V28.283 Z M0.383,25.883 V28.117 H6.817 V25.883 Z M6.942,28.283 V37.758 H15.258 V28.283 Z M6.983,25.883 V28.117 H15.217 V25.883 Z M15.342,28.283 V37.758 H24.258 V28.283 Z M15.383,25.883 V28.117 H24.217 V25.883 Z M24.342,28.283 V37.758 H32.058 V28.283 Z M24.383,25.883 V28.117 H32.017 V25.883 Z M32.142,28.283 V37.758 H37.458 V28.283 Z M32.183,25.883 V28.117 H37.417 V25.883 Z M37.542,28.283 V37.758 H42.858 V28.283 Z M37.583,25.883 V28.117 H42.817 V25.883 Z M42.942,28.283 V37.758 H48.258 V28.283 Z M42.983,25.883 V28.117 H48.217 V25.883 Z M48.342,28.283 V37.758 H53.658 V28.283 Z M48.383,25.883 V28.117 H53.617 V25.883 Z M53.742,28.283 V37.758 H59.058 V28.283 Z M53.783,25.883 V28.117 H59.017 V25.883 Z M59.142,28.283 V37.758 H65.658 V28.283 Z M59.183,25.883 V28.117 H65.617 V25.883 Z M65.742,28.283 V37.758 H72.258 V28.283 Z M65.783,25.883 V28.117 H72.217 V25.883 Z M72.342,28.283 V37.758 H78.858 V28.283 Z M72.383,25.883 V28.117 H78.817 V25.883 Z" fill="#dcdfe4" stroke="#dcdfe4"/>
+</g>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="0">
+<text xml:space="preserve" y="0.96em"></text>
+<text textLength="0.6em" x="0em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">历</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>  </tspan></text>
+<text textLength="0.6em" x="1.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">史</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>    </tspan></text>
+<text textLength="0.6em" x="2.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">收</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>      </tspan></text>
+<text textLength="0.6em" x="3.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">益</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>         </tspan><tspan fill="#dcdfe4">· </tspan></text>
+<text textLength="0.6em" x="6.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">招</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>             </tspan></text>
+<text textLength="0.6em" x="7.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">商</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>               </tspan></text>
+<text textLength="0.6em" x="9em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">证</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                 </tspan></text>
+<text textLength="0.6em" x="10.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">券</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                    </tspan><tspan fill="#dcdfe4">· </tspan><tspan fill="#3ae1f7" font-weight="bold">20250910</tspan><tspan fill="#dcdfe4">—</tspan><tspan fill="#3ae1f7" font-weight="bold">20260626</tspan><tspan> </tspan><tspan fill="#dcdfe4">· </tspan><tspan fill="#3ae1f7" font-weight="bold">25</tspan><tspan> </tspan></text>
+<text textLength="0.6em" x="27em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">条</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                               </tspan></text>
+<text textLength="0.6em" x="28.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">流</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                 </tspan></text>
+<text textLength="0.6em" x="29.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">水</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                    </tspan><tspan fill="#dcdfe4">· </tspan><tspan fill="#3ae1f7" font-weight="bold">1</tspan><tspan> </tspan></text>
+<text textLength="0.6em" x="33.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">个</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                          </tspan></text>
+<text textLength="0.6em" x="34.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">文</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                            </tspan></text>
+<text textLength="0.6em" x="36em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">件</tspan></text>
+<text xml:space="preserve" y="0.96em"></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="14.4">
+<text xml:space="preserve" y="0.96em"></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="28.8">
+<text xml:space="preserve" y="0.96em"><tspan>  </tspan></text>
+<text textLength="0.6em" x="1.2em" xml:space="preserve" y="0.96em"><tspan fill="#f7f9fc" font-weight="bold">项</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>    </tspan></text>
+<text textLength="0.6em" x="2.4em" xml:space="preserve" y="0.96em"><tspan fill="#f7f9fc" font-weight="bold">目</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                             </tspan></text>
+<text textLength="0.6em" x="17.4em" xml:space="preserve" y="0.96em"><tspan fill="#f7f9fc" font-weight="bold">金</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                               </tspan></text>
+<text textLength="0.6em" x="18.6em" xml:space="preserve" y="0.96em"><tspan fill="#f7f9fc" font-weight="bold">额</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                 </tspan></text>
+<text textLength="0.6em" x="19.8em" xml:space="preserve" y="0.96em"><tspan fill="#f7f9fc" font-weight="bold">（</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                   </tspan></text>
+<text textLength="0.6em" x="21em" xml:space="preserve" y="0.96em"><tspan fill="#f7f9fc" font-weight="bold">元</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                     </tspan></text>
+<text textLength="0.6em" x="22.2em" xml:space="preserve" y="0.96em"><tspan fill="#f7f9fc" font-weight="bold">）</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                          </tspan></text>
+<text textLength="0.6em" x="25.2em" xml:space="preserve" y="0.96em"><tspan fill="#f7f9fc" font-weight="bold">备</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                            </tspan></text>
+<text textLength="0.6em" x="26.4em" xml:space="preserve" y="0.96em"><tspan fill="#f7f9fc" font-weight="bold">注</tspan></text>
+<text xml:space="preserve" y="0.96em"></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="43.2">
+<text xml:space="preserve" y="0.96em"></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="57.6">
+<text xml:space="preserve" y="0.96em"><tspan>  </tspan></text>
+<text textLength="0.6em" x="1.2em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">账</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>    </tspan></text>
+<text textLength="0.6em" x="2.4em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">户</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>      </tspan></text>
+<text textLength="0.6em" x="3.6em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">净</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>        </tspan></text>
+<text textLength="0.6em" x="4.8em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">投</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>          </tspan></text>
+<text textLength="0.6em" x="6em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">入</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                              </tspan><tspan fill="#e06c75">98,000.00 </tspan></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="72">
+<text xml:space="preserve" y="0.96em"><tspan>      </tspan></text>
+<text textLength="0.6em" x="3.6em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">其</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>        </tspan></text>
+<text textLength="0.6em" x="4.8em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">中</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>          </tspan></text>
+<text textLength="0.6em" x="6em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">：</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>            </tspan></text>
+<text textLength="0.6em" x="7.2em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">现</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>              </tspan></text>
+<text textLength="0.6em" x="8.4em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">金</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                </tspan></text>
+<text textLength="0.6em" x="9.6em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">净</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                  </tspan></text>
+<text textLength="0.6em" x="10.8em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">投</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                    </tspan></text>
+<text textLength="0.6em" x="12em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">入</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                              </tspan><tspan fill="#e06c75">98,000.00 </tspan><tspan>  </tspan></text>
+<text textLength="0.6em" x="25.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">仅</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                            </tspan></text>
+<text textLength="0.6em" x="26.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">银</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                              </tspan></text>
+<text textLength="0.6em" x="27.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">行</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                </tspan></text>
+<text textLength="0.6em" x="28.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">转</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                  </tspan></text>
+<text textLength="0.6em" x="30em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">账</tspan></text>
+<text xml:space="preserve" y="0.96em"></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="86.4">
+<text xml:space="preserve" y="0.96em"><tspan>  </tspan></text>
+<text textLength="0.6em" x="1.2em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">已</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>    </tspan></text>
+<text textLength="0.6em" x="2.4em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">实</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>      </tspan></text>
+<text textLength="0.6em" x="3.6em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">现</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>        </tspan></text>
+<text textLength="0.6em" x="4.8em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">净</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>          </tspan></text>
+<text textLength="0.6em" x="6em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">收</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>            </tspan></text>
+<text textLength="0.6em" x="7.2em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">益</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                 </tspan><tspan fill="#e06c75">534.31 </tspan><tspan>  </tspan></text>
+<text textLength="0.6em" x="25.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">收</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                            </tspan></text>
+<text textLength="0.6em" x="26.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">益</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                              </tspan></text>
+<text textLength="0.6em" x="27.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">率</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                 </tspan><tspan fill="#dcdfe4">0.55% </tspan></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="100.8">
+<text xml:space="preserve" y="0.96em"><tspan>      </tspan></text>
+<text textLength="0.6em" x="3.6em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">其</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>        </tspan></text>
+<text textLength="0.6em" x="4.8em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">中</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>          </tspan></text>
+<text textLength="0.6em" x="6em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">：</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>            </tspan></text>
+<text textLength="0.6em" x="7.2em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">资</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>              </tspan></text>
+<text textLength="0.6em" x="8.4em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">金</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                </tspan></text>
+<text textLength="0.6em" x="9.6em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">利</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                  </tspan></text>
+<text textLength="0.6em" x="10.8em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">息</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                   </tspan><tspan fill="#dcdfe4">0.00 </tspan><tspan>  </tspan></text>
+<text textLength="0.6em" x="25.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">收</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                            </tspan></text>
+<text textLength="0.6em" x="26.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">益</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                              </tspan></text>
+<text textLength="0.6em" x="27.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">率</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                 </tspan><tspan fill="#dcdfe4">0.00% </tspan></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="115.2">
+<text xml:space="preserve" y="0.96em"><tspan>      </tspan></text>
+<text textLength="0.6em" x="3.6em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">其</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>        </tspan></text>
+<text textLength="0.6em" x="4.8em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">中</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>          </tspan></text>
+<text textLength="0.6em" x="6em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">：</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>            </tspan></text>
+<text textLength="0.6em" x="7.2em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">逆</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>              </tspan></text>
+<text textLength="0.6em" x="8.4em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">回</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                </tspan></text>
+<text textLength="0.6em" x="9.6em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">购</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                  </tspan></text>
+<text textLength="0.6em" x="10.8em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">净</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                    </tspan></text>
+<text textLength="0.6em" x="12em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">收</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                      </tspan></text>
+<text textLength="0.6em" x="13.2em" xml:space="preserve" y="0.96em"><tspan fill="#c678dd">益</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                 </tspan><tspan fill="#e06c75">111.50 </tspan><tspan>  </tspan></text>
+<text textLength="0.6em" x="25.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">年</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                            </tspan></text>
+<text textLength="0.6em" x="26.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">化</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                              </tspan></text>
+<text textLength="0.6em" x="27.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">收</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                </tspan></text>
+<text textLength="0.6em" x="28.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">益</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                  </tspan></text>
+<text textLength="0.6em" x="30em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">率</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                     </tspan><tspan fill="#dcdfe4">1.33% </tspan></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="129.6">
+<text xml:space="preserve" y="0.96em"><tspan>  </tspan></text>
+<text textLength="0.6em" x="1.2em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">交</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>    </tspan></text>
+<text textLength="0.6em" x="2.4em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">易</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>      </tspan></text>
+<text textLength="0.6em" x="3.6em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">总</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>        </tspan></text>
+<text textLength="0.6em" x="4.8em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">额</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                             </tspan><tspan fill="#61afef">764,766.08 </tspan></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="144">
+<text xml:space="preserve" y="0.96em"><tspan>      </tspan></text>
+<text textLength="0.6em" x="3.6em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">其</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>        </tspan></text>
+<text textLength="0.6em" x="4.8em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">中</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>          </tspan></text>
+<text textLength="0.6em" x="6em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">：</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>            </tspan></text>
+<text textLength="0.6em" x="7.2em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">证</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>              </tspan></text>
+<text textLength="0.6em" x="8.4em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">券</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                </tspan></text>
+<text textLength="0.6em" x="9.6em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">交</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                  </tspan></text>
+<text textLength="0.6em" x="10.8em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">易</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                    </tspan></text>
+<text textLength="0.6em" x="12em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">总</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                      </tspan></text>
+<text textLength="0.6em" x="13.2em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">额</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                             </tspan><tspan fill="#61afef">171,748.29 </tspan><tspan>  </tspan></text>
+<text textLength="0.6em" x="25.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">证</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                            </tspan></text>
+<text textLength="0.6em" x="26.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">券</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                              </tspan></text>
+<text textLength="0.6em" x="27.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">买</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                </tspan></text>
+<text textLength="0.6em" x="28.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">卖</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                  </tspan></text>
+<text textLength="0.6em" x="30em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">金</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                    </tspan></text>
+<text textLength="0.6em" x="31.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">额</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                      </tspan></text>
+<text textLength="0.6em" x="32.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">之</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                        </tspan></text>
+<text textLength="0.6em" x="33.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">和</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                          </tspan></text>
+<text textLength="0.6em" x="34.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">，</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                            </tspan></text>
+<text textLength="0.6em" x="36em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">含</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                              </tspan></text>
+<text textLength="0.6em" x="37.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">手</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                </tspan></text>
+<text textLength="0.6em" x="38.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">续</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                  </tspan></text>
+<text textLength="0.6em" x="39.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">费</tspan></text>
+<text xml:space="preserve" y="0.96em"></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="158.4">
+<text xml:space="preserve" y="0.96em"><tspan>      </tspan></text>
+<text textLength="0.6em" x="3.6em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">其</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>        </tspan></text>
+<text textLength="0.6em" x="4.8em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">中</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>          </tspan></text>
+<text textLength="0.6em" x="6em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">：</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>            </tspan></text>
+<text textLength="0.6em" x="7.2em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">逆</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>              </tspan></text>
+<text textLength="0.6em" x="8.4em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">回</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                </tspan></text>
+<text textLength="0.6em" x="9.6em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">购</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                  </tspan></text>
+<text textLength="0.6em" x="10.8em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">交</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                    </tspan></text>
+<text textLength="0.6em" x="12em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">易</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                      </tspan></text>
+<text textLength="0.6em" x="13.2em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">总</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                        </tspan></text>
+<text textLength="0.6em" x="14.4em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">额</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                             </tspan><tspan fill="#61afef">593,017.79 </tspan><tspan>  </tspan></text>
+<text textLength="0.6em" x="25.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">拆</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                            </tspan></text>
+<text textLength="0.6em" x="26.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">出</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                              </tspan></text>
+<text textLength="0.6em" x="27.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">金</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                </tspan></text>
+<text textLength="0.6em" x="28.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">额</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                  </tspan></text>
+<text textLength="0.6em" x="30em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">之</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                    </tspan></text>
+<text textLength="0.6em" x="31.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">和</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                      </tspan></text>
+<text textLength="0.6em" x="32.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">，</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                        </tspan></text>
+<text textLength="0.6em" x="33.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">含</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                          </tspan></text>
+<text textLength="0.6em" x="34.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">手</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                            </tspan></text>
+<text textLength="0.6em" x="36em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">续</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                              </tspan></text>
+<text textLength="0.6em" x="37.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">费</tspan></text>
+<text xml:space="preserve" y="0.96em"></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="172.8">
+<text xml:space="preserve" y="0.96em"><tspan>  </tspan></text>
+<text textLength="0.6em" x="1.2em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">交</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>    </tspan></text>
+<text textLength="0.6em" x="2.4em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">易</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>      </tspan></text>
+<text textLength="0.6em" x="3.6em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">手</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>        </tspan></text>
+<text textLength="0.6em" x="4.8em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">续</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>          </tspan></text>
+<text textLength="0.6em" x="6em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">费</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>            </tspan></text>
+<text textLength="0.6em" x="7.2em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">合</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>              </tspan></text>
+<text textLength="0.6em" x="8.4em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">计</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                 </tspan><tspan fill="#e5c07b">144.98 </tspan><tspan>  </tspan></text>
+<text textLength="0.6em" x="25.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">占</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                            </tspan></text>
+<text textLength="0.6em" x="26.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">交</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                              </tspan></text>
+<text textLength="0.6em" x="27.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">易</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                </tspan></text>
+<text textLength="0.6em" x="28.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">总</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                  </tspan></text>
+<text textLength="0.6em" x="30em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">额</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                     </tspan><tspan fill="#dcdfe4">0.19‰ </tspan></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="187.2">
+<text xml:space="preserve" y="0.96em"><tspan>      </tspan></text>
+<text textLength="0.6em" x="3.6em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">其</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>        </tspan></text>
+<text textLength="0.6em" x="4.8em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">中</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>          </tspan></text>
+<text textLength="0.6em" x="6em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">：</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>            </tspan></text>
+<text textLength="0.6em" x="7.2em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">印</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>              </tspan></text>
+<text textLength="0.6em" x="8.4em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">花</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                </tspan></text>
+<text textLength="0.6em" x="9.6em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">税</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                  </tspan><tspan fill="#e5c07b">26.70 </tspan><tspan>  </tspan></text>
+<text textLength="0.6em" x="25.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">占</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                            </tspan></text>
+<text textLength="0.6em" x="26.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">交</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                              </tspan></text>
+<text textLength="0.6em" x="27.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">易</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                </tspan></text>
+<text textLength="0.6em" x="28.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">总</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                  </tspan></text>
+<text textLength="0.6em" x="30em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">额</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                     </tspan><tspan fill="#dcdfe4">0.03‰</tspan></text>
+<text textLength="0.6em" x="34.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">；</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                            </tspan></text>
+<text textLength="0.6em" x="36em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">占</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                              </tspan></text>
+<text textLength="0.6em" x="37.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">手</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                </tspan></text>
+<text textLength="0.6em" x="38.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">续</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                  </tspan></text>
+<text textLength="0.6em" x="39.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">费</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                     </tspan><tspan fill="#dcdfe4">18.42% </tspan></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="201.6">
+<text xml:space="preserve" y="0.96em"><tspan>      </tspan></text>
+<text textLength="0.6em" x="3.6em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">其</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>        </tspan></text>
+<text textLength="0.6em" x="4.8em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">中</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>          </tspan></text>
+<text textLength="0.6em" x="6em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">：</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>            </tspan></text>
+<text textLength="0.6em" x="7.2em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">佣</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>              </tspan></text>
+<text textLength="0.6em" x="8.4em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">金</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                 </tspan><tspan fill="#e5c07b">108.64 </tspan><tspan>  </tspan></text>
+<text textLength="0.6em" x="25.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">占</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                            </tspan></text>
+<text textLength="0.6em" x="26.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">交</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                              </tspan></text>
+<text textLength="0.6em" x="27.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">易</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                </tspan></text>
+<text textLength="0.6em" x="28.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">总</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                  </tspan></text>
+<text textLength="0.6em" x="30em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">额</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                     </tspan><tspan fill="#dcdfe4">0.14‰</tspan></text>
+<text textLength="0.6em" x="34.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">；</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                            </tspan></text>
+<text textLength="0.6em" x="36em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">占</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                              </tspan></text>
+<text textLength="0.6em" x="37.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">手</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                </tspan></text>
+<text textLength="0.6em" x="38.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">续</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                  </tspan></text>
+<text textLength="0.6em" x="39.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">费</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                     </tspan><tspan fill="#dcdfe4">74.93% </tspan></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="216">
+<text xml:space="preserve" y="0.96em"><tspan>      </tspan></text>
+<text textLength="0.6em" x="3.6em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">其</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>        </tspan></text>
+<text textLength="0.6em" x="4.8em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">中</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>          </tspan></text>
+<text textLength="0.6em" x="6em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">：</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>            </tspan></text>
+<text textLength="0.6em" x="7.2em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">逆</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>              </tspan></text>
+<text textLength="0.6em" x="8.4em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">回</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                </tspan></text>
+<text textLength="0.6em" x="9.6em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">购</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                  </tspan></text>
+<text textLength="0.6em" x="10.8em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">手</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                    </tspan></text>
+<text textLength="0.6em" x="12em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">续</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                      </tspan></text>
+<text textLength="0.6em" x="13.2em" xml:space="preserve" y="0.96em"><tspan fill="#e5c07b">费</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                  </tspan><tspan fill="#e5c07b">17.79 </tspan><tspan>  </tspan></text>
+<text textLength="0.6em" x="25.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">占</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                            </tspan></text>
+<text textLength="0.6em" x="26.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">交</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                              </tspan></text>
+<text textLength="0.6em" x="27.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">易</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                </tspan></text>
+<text textLength="0.6em" x="28.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">总</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                  </tspan></text>
+<text textLength="0.6em" x="30em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">额</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                     </tspan><tspan fill="#dcdfe4">0.02‰</tspan></text>
+<text textLength="0.6em" x="34.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">；</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                            </tspan></text>
+<text textLength="0.6em" x="36em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">占</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                              </tspan></text>
+<text textLength="0.6em" x="37.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">手</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                </tspan></text>
+<text textLength="0.6em" x="38.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">续</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                  </tspan></text>
+<text textLength="0.6em" x="39.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">费</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                     </tspan><tspan fill="#dcdfe4">12.27% </tspan></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="230.4">
+<text xml:space="preserve" y="0.96em"><tspan>  </tspan></text>
+<text textLength="0.6em" x="1.2em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">剩</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>    </tspan></text>
+<text textLength="0.6em" x="2.4em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">余</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>      </tspan></text>
+<text textLength="0.6em" x="3.6em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">成</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>        </tspan></text>
+<text textLength="0.6em" x="4.8em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">本</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                               </tspan><tspan fill="#61afef">8,465.00 </tspan></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="244.8">
+<text xml:space="preserve" y="0.96em"><tspan>      </tspan></text>
+<text textLength="0.6em" x="3.6em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">其</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>        </tspan></text>
+<text textLength="0.6em" x="4.8em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">中</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>          </tspan></text>
+<text textLength="0.6em" x="6em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">：</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>            </tspan></text>
+<text textLength="0.6em" x="7.2em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">证</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>              </tspan></text>
+<text textLength="0.6em" x="8.4em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">券</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                </tspan></text>
+<text textLength="0.6em" x="9.6em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">持</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                  </tspan></text>
+<text textLength="0.6em" x="10.8em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">仓</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                    </tspan></text>
+<text textLength="0.6em" x="12em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">成</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                      </tspan></text>
+<text textLength="0.6em" x="13.2em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">本</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                               </tspan><tspan fill="#61afef">8,465.00 </tspan></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="259.2">
+<text xml:space="preserve" y="0.96em"><tspan>      </tspan></text>
+<text textLength="0.6em" x="3.6em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">其</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>        </tspan></text>
+<text textLength="0.6em" x="4.8em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">中</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>          </tspan></text>
+<text textLength="0.6em" x="6em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">：</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>            </tspan></text>
+<text textLength="0.6em" x="7.2em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">逆</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>              </tspan></text>
+<text textLength="0.6em" x="8.4em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">回</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                </tspan></text>
+<text textLength="0.6em" x="9.6em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">购</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                  </tspan></text>
+<text textLength="0.6em" x="10.8em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">本</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                    </tspan></text>
+<text textLength="0.6em" x="12em" xml:space="preserve" y="0.96em"><tspan fill="#61afef">金</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                   </tspan><tspan fill="#61afef">0.00 </tspan></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="273.6">
+<text xml:space="preserve" y="0.96em"></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="288">
+<text xml:space="preserve" y="0.96em"></text>
+<text textLength="0.6em" x="0em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" font-style="italic">按</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>  </tspan></text>
+<text textLength="0.6em" x="1.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" font-style="italic">证</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>    </tspan></text>
+<text textLength="0.6em" x="2.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" font-style="italic">券</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>      </tspan></text>
+<text textLength="0.6em" x="3.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" font-style="italic">汇</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>        </tspan></text>
+<text textLength="0.6em" x="4.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" font-style="italic">总</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>          </tspan></text>
+<text textLength="0.6em" x="6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" font-style="italic">及</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>            </tspan></text>
+<text textLength="0.6em" x="7.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" font-style="italic">交</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>              </tspan></text>
+<text textLength="0.6em" x="8.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" font-style="italic">易</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                </tspan></text>
+<text textLength="0.6em" x="9.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" font-style="italic">手</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                  </tspan></text>
+<text textLength="0.6em" x="10.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" font-style="italic">续</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                    </tspan></text>
+<text textLength="0.6em" x="12em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" font-style="italic">费</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                      </tspan></text>
+<text textLength="0.6em" x="13.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" font-style="italic">明</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                        </tspan></text>
+<text textLength="0.6em" x="14.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" font-style="italic">细</tspan></text>
+<text xml:space="preserve" y="0.96em"></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="302.4">
+<text xml:space="preserve" y="0.96em"></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="316.8">
+<text xml:space="preserve" y="0.96em"><tspan>  </tspan></text>
+<text textLength="0.6em" x="1.2em" xml:space="preserve" y="0.96em"><tspan fill="#3ae1f7" font-weight="bold">证</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>    </tspan></text>
+<text textLength="0.6em" x="2.4em" xml:space="preserve" y="0.96em"><tspan fill="#3ae1f7" font-weight="bold">券</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>      </tspan></text>
+<text textLength="0.6em" x="3.6em" xml:space="preserve" y="0.96em"><tspan fill="#3ae1f7" font-weight="bold">代</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>        </tspan></text>
+<text textLength="0.6em" x="4.8em" xml:space="preserve" y="0.96em"><tspan fill="#3ae1f7" font-weight="bold">码</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>             </tspan></text>
+<text textLength="0.6em" x="7.8em" xml:space="preserve" y="0.96em"><tspan fill="#3ae1f7" font-weight="bold">最</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>               </tspan></text>
+<text textLength="0.6em" x="9em" xml:space="preserve" y="0.96em"><tspan fill="#3ae1f7" font-weight="bold">新</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                 </tspan></text>
+<text textLength="0.6em" x="10.2em" xml:space="preserve" y="0.96em"><tspan fill="#3ae1f7" font-weight="bold">名</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                   </tspan></text>
+<text textLength="0.6em" x="11.4em" xml:space="preserve" y="0.96em"><tspan fill="#3ae1f7" font-weight="bold">称</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                           </tspan></text>
+<text textLength="0.6em" x="16.2em" xml:space="preserve" y="0.96em"><tspan fill="#ee82ee" font-weight="bold">已</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                             </tspan></text>
+<text textLength="0.6em" x="17.4em" xml:space="preserve" y="0.96em"><tspan fill="#ee82ee" font-weight="bold">实</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                               </tspan></text>
+<text textLength="0.6em" x="18.6em" xml:space="preserve" y="0.96em"><tspan fill="#ee82ee" font-weight="bold">现</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                 </tspan></text>
+<text textLength="0.6em" x="19.8em" xml:space="preserve" y="0.96em"><tspan fill="#ee82ee" font-weight="bold">净</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                   </tspan></text>
+<text textLength="0.6em" x="21em" xml:space="preserve" y="0.96em"><tspan fill="#ee82ee" font-weight="bold">收</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                     </tspan></text>
+<text textLength="0.6em" x="22.2em" xml:space="preserve" y="0.96em"><tspan fill="#ee82ee" font-weight="bold">益</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                          </tspan></text>
+<text textLength="0.6em" x="25.2em" xml:space="preserve" y="0.96em"><tspan fill="#edc273" font-weight="bold">手</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                            </tspan></text>
+<text textLength="0.6em" x="26.4em" xml:space="preserve" y="0.96em"><tspan fill="#edc273" font-weight="bold">续</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                              </tspan></text>
+<text textLength="0.6em" x="27.6em" xml:space="preserve" y="0.96em"><tspan fill="#edc273" font-weight="bold">费</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                </tspan></text>
+<text textLength="0.6em" x="28.8em" xml:space="preserve" y="0.96em"><tspan fill="#edc273" font-weight="bold">合</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                  </tspan></text>
+<text textLength="0.6em" x="30em" xml:space="preserve" y="0.96em"><tspan fill="#edc273" font-weight="bold">计</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                       </tspan></text>
+<text textLength="0.6em" x="33em" xml:space="preserve" y="0.96em"><tspan fill="#edc273" font-weight="bold">印</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                         </tspan></text>
+<text textLength="0.6em" x="34.2em" xml:space="preserve" y="0.96em"><tspan fill="#edc273" font-weight="bold">花</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                           </tspan></text>
+<text textLength="0.6em" x="35.4em" xml:space="preserve" y="0.96em"><tspan fill="#edc273" font-weight="bold">税</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                  </tspan></text>
+<text textLength="0.6em" x="39.6em" xml:space="preserve" y="0.96em"><tspan fill="#edc273" font-weight="bold">佣</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                    </tspan></text>
+<text textLength="0.6em" x="40.8em" xml:space="preserve" y="0.96em"><tspan fill="#edc273" font-weight="bold">金</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                         </tspan></text>
+<text textLength="0.6em" x="43.8em" xml:space="preserve" y="0.96em"><tspan fill="#edc273" font-weight="bold">经</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                           </tspan></text>
+<text textLength="0.6em" x="45em" xml:space="preserve" y="0.96em"><tspan fill="#edc273" font-weight="bold">手</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                             </tspan></text>
+<text textLength="0.6em" x="46.2em" xml:space="preserve" y="0.96em"><tspan fill="#edc273" font-weight="bold">费</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                  </tspan></text>
+<text textLength="0.6em" x="49.2em" xml:space="preserve" y="0.96em"><tspan fill="#edc273" font-weight="bold">证</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                    </tspan></text>
+<text textLength="0.6em" x="50.4em" xml:space="preserve" y="0.96em"><tspan fill="#edc273" font-weight="bold">管</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                      </tspan></text>
+<text textLength="0.6em" x="51.6em" xml:space="preserve" y="0.96em"><tspan fill="#edc273" font-weight="bold">费</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                           </tspan></text>
+<text textLength="0.6em" x="54.6em" xml:space="preserve" y="0.96em"><tspan fill="#edc273" font-weight="bold">过</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                             </tspan></text>
+<text textLength="0.6em" x="55.8em" xml:space="preserve" y="0.96em"><tspan fill="#edc273" font-weight="bold">户</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                               </tspan></text>
+<text textLength="0.6em" x="57em" xml:space="preserve" y="0.96em"><tspan fill="#edc273" font-weight="bold">费</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                                    </tspan></text>
+<text textLength="0.6em" x="60em" xml:space="preserve" y="0.96em"><tspan fill="#84c8ff" font-weight="bold">交</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                                      </tspan></text>
+<text textLength="0.6em" x="61.2em" xml:space="preserve" y="0.96em"><tspan fill="#84c8ff" font-weight="bold">易</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                                        </tspan></text>
+<text textLength="0.6em" x="62.4em" xml:space="preserve" y="0.96em"><tspan fill="#84c8ff" font-weight="bold">笔</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                                          </tspan></text>
+<text textLength="0.6em" x="63.6em" xml:space="preserve" y="0.96em"><tspan fill="#84c8ff" font-weight="bold">数</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                                               </tspan></text>
+<text textLength="0.6em" x="66.6em" xml:space="preserve" y="0.96em"><tspan fill="#84c8ff" font-weight="bold">剩</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                                                 </tspan></text>
+<text textLength="0.6em" x="67.8em" xml:space="preserve" y="0.96em"><tspan fill="#84c8ff" font-weight="bold">余</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                                                   </tspan></text>
+<text textLength="0.6em" x="69em" xml:space="preserve" y="0.96em"><tspan fill="#84c8ff" font-weight="bold">数</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                                                     </tspan></text>
+<text textLength="0.6em" x="70.2em" xml:space="preserve" y="0.96em"><tspan fill="#84c8ff" font-weight="bold">量</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                                                          </tspan></text>
+<text textLength="0.6em" x="73.2em" xml:space="preserve" y="0.96em"><tspan fill="#84c8ff" font-weight="bold">剩</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                                                            </tspan></text>
+<text textLength="0.6em" x="74.4em" xml:space="preserve" y="0.96em"><tspan fill="#84c8ff" font-weight="bold">余</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                                                              </tspan></text>
+<text textLength="0.6em" x="75.6em" xml:space="preserve" y="0.96em"><tspan fill="#84c8ff" font-weight="bold">成</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                                                                </tspan></text>
+<text textLength="0.6em" x="76.8em" xml:space="preserve" y="0.96em"><tspan fill="#84c8ff" font-weight="bold">本</tspan></text>
+<text xml:space="preserve" y="0.96em"></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="331.2">
+<text xml:space="preserve" y="0.96em"></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="345.6">
+<text xml:space="preserve" y="0.96em"><tspan>  </tspan><tspan fill="#56b6c2">603319 </tspan><tspan>    </tspan></text>
+<text textLength="0.6em" x="7.8em" xml:space="preserve" y="0.96em"><tspan fill="#56b6c2">美</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>               </tspan></text>
+<text textLength="0.6em" x="9em" xml:space="preserve" y="0.96em"><tspan fill="#56b6c2">湖</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                 </tspan></text>
+<text textLength="0.6em" x="10.2em" xml:space="preserve" y="0.96em"><tspan fill="#56b6c2">股</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                   </tspan></text>
+<text textLength="0.6em" x="11.4em" xml:space="preserve" y="0.96em"><tspan fill="#56b6c2">份</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                 </tspan><tspan fill="#e06c75">672.15 </tspan><tspan>       </tspan><tspan fill="#e5c07b">27.85 </tspan><tspan>    </tspan><tspan fill="#e5c07b">7.56 </tspan><tspan>   </tspan><tspan fill="#e5c07b">18.41 </tspan><tspan>    </tspan><tspan fill="#e5c07b">1.00 </tspan><tspan>    </tspan><tspan fill="#e5c07b">0.59 </tspan><tspan>    </tspan><tspan fill="#e5c07b">0.29 </tspan><tspan>         </tspan><tspan fill="#61afef">4 </tspan><tspan>         </tspan><tspan fill="#61afef">0 </tspan><tspan>      </tspan><tspan fill="#61afef">0.00 </tspan></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="360">
+<text xml:space="preserve" y="0.96em"><tspan>  </tspan><tspan fill="#56b6c2">601899 </tspan><tspan>    </tspan></text>
+<text textLength="0.6em" x="7.8em" xml:space="preserve" y="0.96em"><tspan fill="#56b6c2">紫</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>               </tspan></text>
+<text textLength="0.6em" x="9em" xml:space="preserve" y="0.96em"><tspan fill="#56b6c2">金</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                 </tspan></text>
+<text textLength="0.6em" x="10.2em" xml:space="preserve" y="0.96em"><tspan fill="#56b6c2">矿</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                   </tspan></text>
+<text textLength="0.6em" x="11.4em" xml:space="preserve" y="0.96em"><tspan fill="#56b6c2">业</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                 </tspan><tspan fill="#e06c75">167.83 </tspan><tspan>       </tspan><tspan fill="#e5c07b">15.17 </tspan><tspan>    </tspan><tspan fill="#e5c07b">4.97 </tspan><tspan>    </tspan><tspan fill="#e5c07b">8.93 </tspan><tspan>    </tspan><tspan fill="#e5c07b">0.67 </tspan><tspan>    </tspan><tspan fill="#e5c07b">0.40 </tspan><tspan>    </tspan><tspan fill="#e5c07b">0.20 </tspan><tspan>         </tspan><tspan fill="#61afef">2 </tspan><tspan>         </tspan><tspan fill="#61afef">0 </tspan><tspan>      </tspan><tspan fill="#61afef">0.00 </tspan></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="374.4">
+<text xml:space="preserve" y="0.96em"><tspan>  </tspan><tspan fill="#56b6c2">204003 </tspan><tspan>    </tspan><tspan fill="#56b6c2">GC003 </tspan><tspan>              </tspan><tspan fill="#e06c75">111.50 </tspan><tspan>       </tspan><tspan fill="#e5c07b">17.79 </tspan><tspan>    </tspan><tspan fill="#e5c07b">0.00 </tspan><tspan>   </tspan><tspan fill="#e5c07b">17.79 </tspan><tspan>    </tspan><tspan fill="#e5c07b">0.00 </tspan><tspan>    </tspan><tspan fill="#e5c07b">0.00 </tspan><tspan>    </tspan><tspan fill="#e5c07b">0.00 </tspan><tspan>         </tspan><tspan fill="#61afef">2 </tspan><tspan>         </tspan><tspan fill="#61afef">0 </tspan><tspan>      </tspan><tspan fill="#61afef">0.00 </tspan></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="388.8">
+<text xml:space="preserve" y="0.96em"><tspan>  </tspan><tspan fill="#56b6c2">000629 </tspan><tspan>    </tspan></text>
+<text textLength="0.6em" x="7.8em" xml:space="preserve" y="0.96em"><tspan fill="#56b6c2">钒</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>               </tspan></text>
+<text textLength="0.6em" x="9em" xml:space="preserve" y="0.96em"><tspan fill="#56b6c2">钛</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                 </tspan></text>
+<text textLength="0.6em" x="10.2em" xml:space="preserve" y="0.96em"><tspan fill="#56b6c2">股</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                   </tspan></text>
+<text textLength="0.6em" x="11.4em" xml:space="preserve" y="0.96em"><tspan fill="#56b6c2">份</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                   </tspan><tspan fill="#dcdfe4">0.00 </tspan><tspan>        </tspan><tspan fill="#e5c07b">5.00 </tspan><tspan>    </tspan><tspan fill="#e5c07b">0.00 </tspan><tspan>    </tspan><tspan fill="#e5c07b">4.46 </tspan><tspan>    </tspan><tspan fill="#e5c07b">0.29 </tspan><tspan>    </tspan><tspan fill="#e5c07b">0.17 </tspan><tspan>    </tspan><tspan fill="#e5c07b">0.08 </tspan><tspan>         </tspan><tspan fill="#61afef">1 </tspan><tspan>      </tspan><tspan fill="#61afef">3000 </tspan><tspan>  </tspan><tspan fill="#61afef">8,465.00 </tspan></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="403.2">
+<text xml:space="preserve" y="0.96em"><tspan>  </tspan><tspan fill="#56b6c2">002129 </tspan><tspan>    </tspan><tspan fill="#56b6c2">TCL</tspan></text>
+<text textLength="0.6em" x="9.6em" xml:space="preserve" y="0.96em"><tspan fill="#56b6c2">中</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                  </tspan></text>
+<text textLength="0.6em" x="10.8em" xml:space="preserve" y="0.96em"><tspan fill="#56b6c2">环</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                </tspan><tspan fill="#98c379">-147.17 </tspan><tspan>       </tspan><tspan fill="#e5c07b">59.17 </tspan><tspan>   </tspan><tspan fill="#e5c07b">14.17 </tspan><tspan>   </tspan><tspan fill="#e5c07b">41.35 </tspan><tspan>    </tspan><tspan fill="#e5c07b">1.94 </tspan><tspan>    </tspan><tspan fill="#e5c07b">1.14 </tspan><tspan>    </tspan><tspan fill="#e5c07b">0.57 </tspan><tspan>         </tspan><tspan fill="#61afef">9 </tspan><tspan>         </tspan><tspan fill="#61afef">0 </tspan><tspan>      </tspan><tspan fill="#61afef">0.00 </tspan></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="417.6">
+<text xml:space="preserve" y="0.96em"><tspan>  </tspan><tspan fill="#56b6c2">159941 </tspan><tspan>    </tspan></text>
+<text textLength="0.6em" x="7.8em" xml:space="preserve" y="0.96em"><tspan fill="#56b6c2">纳</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>               </tspan></text>
+<text textLength="0.6em" x="9em" xml:space="preserve" y="0.96em"><tspan fill="#56b6c2">指</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                 </tspan><tspan fill="#56b6c2">ETF</tspan></text>
+<text textLength="0.6em" x="12em" xml:space="preserve" y="0.96em"><tspan fill="#56b6c2">广</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                      </tspan></text>
+<text textLength="0.6em" x="13.2em" xml:space="preserve" y="0.96em"><tspan fill="#56b6c2">发</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                </tspan><tspan fill="#98c379">-270.00 </tspan><tspan>       </tspan><tspan fill="#e5c07b">20.00 </tspan><tspan>    </tspan><tspan fill="#e5c07b">0.00 </tspan><tspan>   </tspan><tspan fill="#e5c07b">17.70 </tspan><tspan>    </tspan><tspan fill="#e5c07b">2.30 </tspan><tspan>    </tspan><tspan fill="#e5c07b">0.00 </tspan><tspan>    </tspan><tspan fill="#e5c07b">0.00 </tspan><tspan>         </tspan><tspan fill="#61afef">4 </tspan><tspan>         </tspan><tspan fill="#61afef">0 </tspan><tspan>      </tspan><tspan fill="#61afef">0.00 </tspan></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="432">
+<text xml:space="preserve" y="0.96em"><tspan>  </tspan></text>
+<text textLength="0.6em" x="1.2em" xml:space="preserve" y="0.96em"><tspan fill="#3ae1f7" font-weight="bold">合</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>    </tspan></text>
+<text textLength="0.6em" x="2.4em" xml:space="preserve" y="0.96em"><tspan fill="#3ae1f7" font-weight="bold">计</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                 </tspan><tspan fill="#fd807f" font-weight="bold">534.31 </tspan><tspan>      </tspan><tspan fill="#edc273" font-weight="bold">144.98 </tspan><tspan>   </tspan><tspan fill="#edc273" font-weight="bold">26.70 </tspan><tspan>  </tspan><tspan fill="#edc273" font-weight="bold">108.64 </tspan><tspan>    </tspan><tspan fill="#edc273" font-weight="bold">6.20 </tspan><tspan>    </tspan><tspan fill="#edc273" font-weight="bold">2.30 </tspan><tspan>    </tspan><tspan fill="#edc273" font-weight="bold">1.14 </tspan><tspan>        </tspan><tspan fill="#84c8ff" font-weight="bold">22 </tspan><tspan>      </tspan><tspan fill="#84c8ff" font-weight="bold">3000 </tspan><tspan>  </tspan><tspan fill="#84c8ff" font-weight="bold">8,465.00 </tspan></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="446.4">
+<text xml:space="preserve" y="0.96em"></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="460.8">
+<text xml:space="preserve" y="0.96em"></text>
+<text textLength="0.6em" x="0em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">已</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>  </tspan></text>
+<text textLength="0.6em" x="1.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">隐</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>    </tspan></text>
+<text textLength="0.6em" x="2.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">藏</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>      </tspan></text>
+<text textLength="0.6em" x="3.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">列</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>        </tspan></text>
+<text textLength="0.6em" x="4.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">：</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>          </tspan></text>
+<text textLength="0.6em" x="6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">结</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>            </tspan></text>
+<text textLength="0.6em" x="7.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">算</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>              </tspan></text>
+<text textLength="0.6em" x="8.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">费</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                </tspan></text>
+<text textLength="0.6em" x="9.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">、</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                  </tspan></text>
+<text textLength="0.6em" x="10.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">其</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                    </tspan></text>
+<text textLength="0.6em" x="12em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">他</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                      </tspan></text>
+<text textLength="0.6em" x="13.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">费</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                        </tspan></text>
+<text textLength="0.6em" x="14.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">用</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                          </tspan></text>
+<text textLength="0.6em" x="15.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">、</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                            </tspan></text>
+<text textLength="0.6em" x="16.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">分</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                              </tspan></text>
+<text textLength="0.6em" x="18em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">红</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                </tspan></text>
+<text textLength="0.6em" x="19.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">净</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                  </tspan></text>
+<text textLength="0.6em" x="20.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">额</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                    </tspan></text>
+<text textLength="0.6em" x="21.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">（</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                      </tspan></text>
+<text textLength="0.6em" x="22.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">所</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                        </tspan></text>
+<text textLength="0.6em" x="24em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">有</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                          </tspan></text>
+<text textLength="0.6em" x="25.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">明</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                            </tspan></text>
+<text textLength="0.6em" x="26.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">细</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                              </tspan></text>
+<text textLength="0.6em" x="27.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">均</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                </tspan></text>
+<text textLength="0.6em" x="28.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">为</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                   </tspan><tspan fill="#3ae1f7" font-weight="bold">0</tspan></text>
+<text textLength="0.6em" x="31.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">）</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                      </tspan></text>
+<text textLength="0.6em" x="32.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">；</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                        </tspan></text>
+<text textLength="0.6em" x="33.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">托</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                          </tspan></text>
+<text textLength="0.6em" x="34.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">管</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                            </tspan></text>
+<text textLength="0.6em" x="36em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">净</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                              </tspan></text>
+<text textLength="0.6em" x="37.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">转</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                </tspan></text>
+<text textLength="0.6em" x="38.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">入</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                  </tspan></text>
+<text textLength="0.6em" x="39.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">（</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                    </tspan></text>
+<text textLength="0.6em" x="40.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">无</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                      </tspan></text>
+<text textLength="0.6em" x="42em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">有</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                        </tspan></text>
+<text textLength="0.6em" x="43.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">效</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                          </tspan></text>
+<text textLength="0.6em" x="44.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">托</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                            </tspan></text>
+<text textLength="0.6em" x="45.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">管</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                              </tspan></text>
+<text textLength="0.6em" x="46.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">业</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                </tspan></text>
+<text textLength="0.6em" x="48em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">务</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                  </tspan></text>
+<text textLength="0.6em" x="49.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">）</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                    </tspan></text>
+<text textLength="0.6em" x="50.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">；</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                      </tspan></text>
+<text textLength="0.6em" x="51.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">备</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                        </tspan></text>
+<text textLength="0.6em" x="52.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">注</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                          </tspan></text>
+<text textLength="0.6em" x="54em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">（</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                            </tspan></text>
+<text textLength="0.6em" x="55.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">无</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                              </tspan></text>
+<text textLength="0.6em" x="56.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">备</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                                </tspan></text>
+<text textLength="0.6em" x="57.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">注</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                                  </tspan></text>
+<text textLength="0.6em" x="58.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">内</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                                    </tspan></text>
+<text textLength="0.6em" x="60em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">容</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                                      </tspan></text>
+<text textLength="0.6em" x="61.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">）</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                                                                        </tspan></text>
+<text textLength="0.6em" x="62.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4" opacity="0.5">。</tspan></text>
+<text xml:space="preserve" y="0.96em"></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="475.2">
+<text xml:space="preserve" y="0.96em"></text>
+<text textLength="0.6em" x="0em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">收</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>  </tspan></text>
+<text textLength="0.6em" x="1.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">益</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>    </tspan></text>
+<text textLength="0.6em" x="2.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">采</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>      </tspan></text>
+<text textLength="0.6em" x="3.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">用</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>        </tspan></text>
+<text textLength="0.6em" x="4.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">移</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>          </tspan></text>
+<text textLength="0.6em" x="6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">动</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>            </tspan></text>
+<text textLength="0.6em" x="7.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">加</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>              </tspan></text>
+<text textLength="0.6em" x="8.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">权</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                </tspan></text>
+<text textLength="0.6em" x="9.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">成</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                  </tspan></text>
+<text textLength="0.6em" x="10.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">本</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                    </tspan></text>
+<text textLength="0.6em" x="12em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">，</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                      </tspan></text>
+<text textLength="0.6em" x="13.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">不</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                        </tspan></text>
+<text textLength="0.6em" x="14.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">计</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                          </tspan></text>
+<text textLength="0.6em" x="15.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">算</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                            </tspan></text>
+<text textLength="0.6em" x="16.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">浮</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                              </tspan></text>
+<text textLength="0.6em" x="18em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">盈</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                </tspan></text>
+<text textLength="0.6em" x="19.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">浮</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                  </tspan></text>
+<text textLength="0.6em" x="20.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">亏</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                    </tspan></text>
+<text textLength="0.6em" x="21.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">；</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                      </tspan></text>
+<text textLength="0.6em" x="22.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">费</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                        </tspan></text>
+<text textLength="0.6em" x="24em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">用</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                          </tspan></text>
+<text textLength="0.6em" x="25.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">已</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                            </tspan></text>
+<text textLength="0.6em" x="26.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">包</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                              </tspan></text>
+<text textLength="0.6em" x="27.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">含</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                </tspan></text>
+<text textLength="0.6em" x="28.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">于</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                  </tspan></text>
+<text textLength="0.6em" x="30em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">净</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                    </tspan></text>
+<text textLength="0.6em" x="31.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">收</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                      </tspan></text>
+<text textLength="0.6em" x="32.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">付</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                        </tspan></text>
+<text textLength="0.6em" x="33.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">款</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                          </tspan></text>
+<text textLength="0.6em" x="34.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">。</tspan></text>
+<text xml:space="preserve" y="0.96em"></text>
+</svg>
+<svg height="14.4" overflow="hidden" width="964.8" y="489.6">
+<text xml:space="preserve" y="0.96em"></text>
+<text textLength="0.6em" x="0em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">账</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>  </tspan></text>
+<text textLength="0.6em" x="1.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">户</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>    </tspan></text>
+<text textLength="0.6em" x="2.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">净</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>      </tspan></text>
+<text textLength="0.6em" x="3.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">投</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>        </tspan></text>
+<text textLength="0.6em" x="4.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">入</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>          </tspan></text>
+<text textLength="0.6em" x="6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">包</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>            </tspan></text>
+<text textLength="0.6em" x="7.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">含</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>              </tspan></text>
+<text textLength="0.6em" x="8.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">托</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                </tspan></text>
+<text textLength="0.6em" x="9.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">管</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                  </tspan></text>
+<text textLength="0.6em" x="10.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">净</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                    </tspan></text>
+<text textLength="0.6em" x="12em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">转</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                      </tspan></text>
+<text textLength="0.6em" x="13.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">入</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                        </tspan></text>
+<text textLength="0.6em" x="14.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">；</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                          </tspan></text>
+<text textLength="0.6em" x="15.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">其</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                            </tspan></text>
+<text textLength="0.6em" x="16.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">余</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                              </tspan></text>
+<text textLength="0.6em" x="18em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">计</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                </tspan></text>
+<text textLength="0.6em" x="19.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">算</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                  </tspan></text>
+<text textLength="0.6em" x="20.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">口</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                    </tspan></text>
+<text textLength="0.6em" x="21.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">径</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                      </tspan></text>
+<text textLength="0.6em" x="22.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">见</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                        </tspan></text>
+<text textLength="0.6em" x="24em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">项</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                          </tspan></text>
+<text textLength="0.6em" x="25.2em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">目</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                            </tspan></text>
+<text textLength="0.6em" x="26.4em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">文</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                              </tspan></text>
+<text textLength="0.6em" x="27.6em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">档</tspan></text>
+<text xml:space="preserve" y="0.96em"><tspan>                                                </tspan></text>
+<text textLength="0.6em" x="28.8em" xml:space="preserve" y="0.96em"><tspan fill="#dcdfe4">。</tspan></text>
+<text xml:space="preserve" y="0.96em"></text>
+</svg>
+</g>
+</svg>
+</svg>
+<rect fill="none" height="546.4" rx="10" ry="10" stroke="#000000" stroke-width="0.5" width="984"/>
+<rect fill="none" height="544.4" rx="9" ry="9" stroke="#f0f0f080" stroke-width="0.5" width="982" x="1" y="1"/>
+</g>
+<style>
+@font-face {
+	font-family: JetBrains Mono;
+	font-weight: 100 800;
+	font-style: normal;
+	src: url(https://raw.githubusercontent.com/pamburus/fonts/refs/heads/main/JetBrainsMono/fonts/variable/JetBrainsMono%5Bwght%5D.woff2) format('woff2');
+}
+</style>
+</svg>

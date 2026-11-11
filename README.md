@@ -2,10 +2,12 @@
 
 使用 uv 管理、Rich 展示的证券流水分析工具，自动识别招商证券资金流水与东方财富证券交割单，并在报告开头显示平台名称。
 
-```powershell
+![收益报告示例](assets/earnings.svg)
+
+```shell
 uv run stock-statement earnings "data/20260907 资金流水.txt"
 uv run stock-statement earnings "data/Table_6188.txt"
-uv run stock-statement earnings data
+uv run stock-statement earnings "./data"
 uv run stock-statement earnings "data/第一段资金流水.txt" "data/第二段资金流水.txt" "data/Table_6188.txt"
 ```
 
@@ -82,3 +84,7 @@ uv run stock-statement earnings "data/第一段资金流水.txt" "data/第二段
 不计算当前市值或总资产。完整账户收益需要完整交易流水及托管转入转出的成交金额。
 无法解析的行或不足的持仓成本会停止报告，未知业务会列明并将报告标记为
 不完整（退出码 1）；输入错误退出码 2。工具不会静默将未知业务认作银行转账。
+
+## 鸣谢
+
+- 截图使用 [pamburus/termframe](https://github.com/pamburus/termframe) 创建
