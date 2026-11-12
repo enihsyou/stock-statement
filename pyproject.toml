@@ -1,6 +1,6 @@
 [project]
 name = "stock-statement"
-version = "0.1.0"
+version = "0.2.0"
 description = "支持多券商的证券流水历史收益分析"
 readme = "README.md"
 authors = [

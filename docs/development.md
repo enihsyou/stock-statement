@@ -32,17 +32,18 @@ uv build
 
 采用 GitHub Release 分别分发 Python 包与前端资源，不需要将前端打入 wheel，也无需用户安装 Node。`.github/workflows/release.yml` 在推送 `v*` 标签时执行：
 
-1. 检查标签与 `pyproject.toml` 的版本一致，例如 `v0.1.0` 对应 `0.1.0`。
+1. 检查标签与 `pyproject.toml` 的版本一致，标签格式为 `v<版本>`。
 2. 使用锁文件安装前端依赖并构建，使用 `uv build` 生成 wheel 和源码包。
 3. 将 `frontend/dist/` 的内容归档为 `stock-statement-ui-<版本>.tar.gz`，入口 `index.html` 位于归档根目录；生成同名 `.sha256` 文件，采用 `sha256sum` 格式。
 4. 将全部文件上传到草稿 Release，上传完成后公开发布。当前不向 PyPI 上传。
 
 发布前更新 `pyproject.toml`、`frontend/package.json` 的版本并用 `uv lock`、`pnpm --dir frontend install --lockfile-only` 更新锁文件，再提交并推送对应标签。仅修改文件或提交代码不会发布；推送标签才会触发工作流。
 
-对应 Release 发布后，可直接从 wheel 安装（以下以 `0.1.0` 为例）：
+对应 Release 发布后，可指定目标版本并直接从 wheel 安装：
 
 ```powershell
-uv tool install --python 3.14 "stock-statement[ui] @ https://gh-proxy.org/https://github.com/enihsyou/stock-statement/releases/download/v0.1.0/stock_statement-0.1.0-py3-none-any.whl"
+$releaseVersion = Read-Host "输入目标 Release 版本（不含 v）"
+uv tool install --python 3.14 "stock-statement[ui] @ https://gh-proxy.org/https://github.com/enihsyou/stock-statement/releases/download/v${releaseVersion}/stock_statement-${releaseVersion}-py3-none-any.whl"
 stock-statement ui
 ```
 
