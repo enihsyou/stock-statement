@@ -16,3 +16,16 @@
 - 合并：收益 `716.75`，剩余成本 `3857.50`，手续费 `31`，印花税 `3`，银行净投入 `12500`，账户净投入 `12900`。
 
 独立业务用例继续覆盖移动加权成本、分红税、托管转移、逆回购、现金配对、平台独立核算、未知业务保留、跨文件重复次数、字段别名和缺省值、一次表头绑定及编码。
+
+## 匿名浏览器验收
+
+先安装 Playwright Chromium，再运行独立验收脚本：
+
+```shell
+uv run --extra ui --with playwright python -m playwright install chromium
+uv run --extra ui --with playwright python -m tests.browser.acceptance
+```
+
+脚本在 `127.0.0.1:18765` 启动独立临时服务，使用匿名合成交割单和合成公共行情，不读取真实 `data` 文件。截图和行情缓存仅写入临时目录，退出时清理，不触达正式行情缓存。端口须未被占用；断言失败以非零状态退出，浏览器和服务在结束时关闭。
+
+默认使用 Playwright 已安装的 Chromium。需要指定已有浏览器时，可设置环境变量 `PLAYWRIGHT_CHROMIUM_EXECUTABLE` 为 Chromium 可执行文件路径。

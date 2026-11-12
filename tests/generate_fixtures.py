@@ -10,8 +10,9 @@ COLUMNS = ["成交日期", "交收日期", "业务名称", "证券代码", "证�
            "成交数量", "成交金额", "发生金额", "币种", "流水号", "佣金", "印花税"]
 
 
-def row(serial, business, amount, *, security=None, quantity="0",
-        trade_amount="", commission="0", stamp="0"):
+def row(serial: int, business: str, amount: str, *, security: int | None = None,
+        quantity: str = "0", trade_amount: str = "", commission: str = "0",
+        stamp: str = "0") -> dict[str, str]:
     """构造日期有序且证券编号与名称对应的匿名流水。"""
     code, name = security_identity(security) if security is not None else ("", "")
     return {"成交日期": "20260901", "交收日期": "20260901", "业务名称": business,

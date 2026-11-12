@@ -9,7 +9,7 @@ from stock_statement.platforms import PLATFORMS
 from tests.factory import security_identity
 
 
-def entry(business, quantity="0", amount="0", *, security=0, trade_amount=None,
+def entry(business, quantity="0", amount="0", *, security: int | None = 0, trade_amount=None,
           fees=None, platform=None, serial="1", day="20260901"):
     """构造仅含业务所需内容的匿名流水。"""
     code, name = security_identity(security) if security is not None else ("", "")

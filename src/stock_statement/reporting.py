@@ -152,8 +152,8 @@ def build_security_rows(report: Report) -> tuple[list[SecurityRow], SecurityTota
 
 
 def rate_text(profit: Decimal, investment: Decimal) -> str:
-    """计算收益率说明，零投入不生成比率。"""
-    return f"收益率 {profit / investment:.2%}" if investment else "收益率不可计算"
+    """净投入非正时不能作为收益率本金。"""
+    return f"收益率 {profit / investment:.2%}" if investment > 0 else "收益率不可计算"
 
 
 def ratio_text(value: Decimal, total: Decimal, label: str, scale: Decimal, suffix: str) -> str:

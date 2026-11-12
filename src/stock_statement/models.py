@@ -45,6 +45,8 @@ class Entry:
     """发生时间原文，用于同日排序；未披露或购回改按交收日核算时为空字符串。"""
     source: str = ""
     """来源流水文件路径，与行号共同定位原始记录；未指定来源时为空字符串。"""
+    shareholder_code: str = ""
+    """招商证券披露的股东代码，用于区分相同标签下的证券账户及匹配成交时间。"""
 
     @property
     def location(self) -> str:
@@ -68,9 +70,10 @@ class Entry:
 
 
 def entry_sort_key(entry: Entry) -> tuple:
-    """按核算日期、时间和原始编号稳定排列流水。"""
-    serial = (0, int(entry.serial)) if entry.serial.isdecimal() else (1, entry.serial)
-    return entry.date, entry.time, serial, entry.line
+    """数字流水号确定同日先后；没有数字编号时沿用披露时间。"""
+    if entry.serial.isdecimal():
+        return entry.date, 0, int(entry.serial), entry.time, entry.line
+    return entry.date, 1, entry.time, entry.serial, entry.line
 
 
 @dataclass(frozen=True)

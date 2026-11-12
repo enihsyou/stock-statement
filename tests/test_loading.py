@@ -6,7 +6,7 @@ from unittest.mock import Mock
 import pytest
 
 from stock_statement import cli
-from stock_statement.loading import expand_paths
+from stock_statement.loading import expand_paths, read_files
 from tests.factory import write_statement
 
 
@@ -49,3 +49,48 @@ def test_directory_report_counts_files_and_preserves_duplicate_occurrences(tmp_p
     assert view.metadata.entries_count == 2
     assert view.metadata.files_count == 2
     assert view.metadata.duplicates == 1
+
+
+def test_china_merchants_trade_query_only_fills_unambiguous_time(tmp_path):
+    normal = {
+        "成交日期": "20261112", "业务名称": "证券买入", "证券代码": "000001",
+        "成交数量": "100", "成交价格": "10", "发生金额": "-1001",
+        "币种": "人民币", "合同编号": "42", "流水号": "7",
+    }
+    statement = write_statement(
+        tmp_path / "流水.txt", list(normal) + ["股东代码"],
+        [normal | {"股东代码": "深圳甲"}, normal | {"股东代码": "深圳乙"}],
+    )
+    history = {
+        "成交日期": "20261112", "成交时间": "09:30:01", "买卖标志": "买入",
+        "成交价格": "10", "成交数量": "100", "委托编号": "42",
+        "证券代码": "000001", "股东代码": "深圳甲",
+    }
+    query = write_statement(
+        tmp_path / "历史成交查询.txt", list(history),
+        [history, history, history | {"股东代码": "深圳乙", "成交时间": "09:30:02"},
+         history | {"股东代码": "深圳乙", "成交时间": "09:30:03"}],
+    )
+
+    entries, duplicates = read_files([query, statement, query])
+
+    assert len(entries) == 2
+    assert duplicates == 0
+    assert {entry.shareholder_code: entry.time for entry in entries} == {
+        "深圳甲": "09:30:01", "深圳乙": "",
+    }
+
+
+def test_partial_trade_times_keep_numeric_serial_order():
+    from dataclasses import replace
+
+    from stock_statement.ledger import analyze
+    from stock_statement.models import entry_sort_key
+    from tests.test_strategies import trades
+
+    buy, sell = trades((100, 10), (-100, 11))
+    buy = replace(buy, date="20261106", original_date="20261106", serial="8240", time="09:39:32")
+    sell = replace(sell, date="20261106", original_date="20261106", serial="8245", time="")
+
+    assert sorted([sell, buy], key=entry_sort_key) == [buy, sell]
+    assert analyze([sell, buy]).securities["000000"].holding.quantity == 0

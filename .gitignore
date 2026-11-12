@@ -12,3 +12,14 @@ wheels/
 # Untracked files
 data/
 out/
+node_modules/
+*.tsbuildinfo
+frontend/openapi.json
+
+# Generated frontend assets
+frontend/dist/
+src/stock_statement/static/
+
+# Local screenshots with real account data
+/dark.png
+/light.png

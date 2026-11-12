@@ -8,6 +8,7 @@ import pytest
 from stock_statement import platforms
 from stock_statement.attributes import BUSINESS, DATE, FEE_COLUMNS, PRICE
 from stock_statement.loading import read_entries
+from stock_statement.models import Entry
 from stock_statement.parsing import HeaderIndex, parse_entries
 from stock_statement.platforms import Platform
 from tests.factory import security_identity, write_statement
@@ -27,6 +28,7 @@ def test_file_encodings_preserve_names_and_leading_zeroes(tmp_path, encoding):
     values = row()
     path = write_statement(tmp_path / "流水.txt", list(values), [values], encoding)
     record, = read_entries(path)
+    assert isinstance(record, Entry)
     assert (record.stock_code, record.stock_name) == ("000001", "证券零一")
     assert record.date == "20260901"
     assert record.amount == D(-1005)
@@ -63,6 +65,7 @@ def test_trade_fields_can_be_derived_from_other_two(tmp_path, missing):
     del values[missing]
     path = write_statement(tmp_path / "缺省.txt", list(values), [values])
     record, = read_entries(path)
+    assert isinstance(record, Entry)
     assert (record.quantity, record.trade_amount, record.trade_price) == (D(100), D(1000), D(10))
 
 
@@ -70,6 +73,7 @@ def test_cash_statement_can_omit_security_and_trade_columns(tmp_path):
     values = {"成交日期": "20260901", "业务名称": "银行转存", "币种": "人民币", "发生金额": "100"}
     path = write_statement(tmp_path / "现金.txt", list(values), [values])
     record, = read_entries(path)
+    assert isinstance(record, Entry)
     assert record.stock_code == record.stock_name == ""
     assert record.quantity is None
     assert record.trade_amount is record.trade_price is None
@@ -84,6 +88,7 @@ def test_zero_transfer_price_does_not_invent_missing_value(tmp_path, declared_am
         values["成交金额"] = declared_amount
     path = write_statement(tmp_path / "托管.txt", list(values), [values])
     record, = read_entries(path)
+    assert isinstance(record, Entry)
     assert record.quantity == D(100)
     assert record.trade_price == D(0)
     assert record.trade_amount == expected
@@ -95,6 +100,7 @@ def test_eastmoney_repayment_uses_settlement_date(tmp_path):
               "币种": "人民币", "发生金额": "1001", "成交数量": "10", "成交均价": "1.5"}
     path = write_statement(tmp_path / "交收.txt", list(values), [values])
     record, = read_entries(path)
+    assert isinstance(record, Entry)
     assert record.business == "拆出质押购回"
     assert record.date == "20260903"
     assert record.time == ""

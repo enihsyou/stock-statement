@@ -38,5 +38,13 @@ def main() -> None:
         help="一个或多个流水文件或目录；目录读取当前层所有 .txt 文件（支持 UTF-8 和 GB18030）",
     )
     command.set_defaults(func=earnings)
+    from .ui import run_ui
+    ui = commands.add_parser("ui", help="启动本地网页与 HTTP API")
+    ui.add_argument("--host", default="127.0.0.1", help="监听地址，默认仅本机")
+    ui.add_argument("--port", type=int, default=8765)
+    ui.add_argument("--no-browser", action="store_true", help="不自动打开浏览器")
+    ui.add_argument("--debug", action="store_true", help="错误日志显示完整异常堆栈")
+    ui.add_argument("--ui-dir", type=Path, help="本地前端构建产物目录，需包含 index.html")
+    ui.set_defaults(func=run_ui)
     args = parser.parse_args()
     args.func(args)

@@ -3,6 +3,7 @@
 import re
 from collections import Counter
 from dataclasses import dataclass
+from datetime import time as clock_time
 from decimal import Decimal
 from typing import Any, cast
 
@@ -18,10 +19,13 @@ from .attributes import (
     PRICE,
     QUANTITY,
     SERIAL,
+    SHAREHOLDER,
     TIME,
     TRADE_AMOUNT,
     TRANSACTION_ID,
     FinancialAttribute,
+    decimal,
+    trading_date,
 )
 from .errors import ParsingError
 from .models import Entry, entry_sort_key
@@ -96,9 +100,9 @@ class HeaderIndex:
         }
         return AttributeValues(values, source, number)
 
-    def read_attribute[T](
-        self, attribute: FinancialAttribute[T], raw: bytes, source: str, number: int,
-    ) -> T | None:
+    def read_attribute(
+        self, attribute: FinancialAttribute[Any], raw: bytes, source: str, number: int,
+    ) -> Any:
         """转换单个字段，失败时指出券商的实际列名。"""
         binding = self.bindings.get(attribute)
         if binding is None:
@@ -113,6 +117,71 @@ class HeaderIndex:
         except (ValueError, ArithmeticError) as exc:
             raise ParsingError(f"无法解析值 {text!r}：{exc}", source=source, line=number,
                                field=binding.name) from exc
+
+
+@dataclass(frozen=True)
+class TradeTime:
+    """招商证券历史成交查询中的一条补充记录，不参与资金核算。"""
+
+    date: str
+    stock_code: str
+    shareholder_code: str
+    order_id: str
+    business: str
+    quantity: Decimal
+    price: Decimal
+    time: str
+
+
+def is_trade_time_file(content: str) -> bool:
+    """用招商证券独有的历史成交查询列区分资金流水。"""
+    return any({"成交时间", "买卖标志"} <= set(line.split())
+               for line in content.splitlines()[:10])
+
+
+def parse_trade_times(content: str, source: str = "") -> list[TradeTime]:
+    """解析招商证券固定宽度历史成交查询，只保留匹配所需字段。"""
+    lines = content.splitlines()
+    required = {"成交日期", "成交时间", "买卖标志", "成交价格", "成交数量",
+                "委托编号", "证券代码", "股东代码"}
+    for header_number, line in enumerate(lines):
+        columns = [(match.group().decode("gb18030"), match.start())
+                   for match in re.finditer(rb"\S+", line.encode("gb18030"))]
+        if {"成交时间", "买卖标志"} <= {name for name, _ in columns}:
+            break
+    else:
+        raise ParsingError("未找到招商证券历史成交查询表头", source=source)
+    missing = required - {name for name, _ in columns}
+    if missing:
+        raise ParsingError("缺少必需列", source=source, line=header_number + 1,
+                           field=" / ".join(sorted(missing)))
+    spans = {name: slice(start, columns[i + 1][1] if i + 1 < len(columns) else None)
+             for i, (name, start) in enumerate(columns)}
+    records = []
+    for number, line in enumerate(lines[header_number + 1:], header_number + 2):
+        if not line.strip() or set(line.strip()) <= {"-", "="}:
+            continue
+        raw = line.encode("gb18030")
+        cells = {name: raw[spans[name]].decode("gb18030").strip() for name in required}
+        try:
+            day = trading_date(cells["成交日期"])
+            clock = cells["成交时间"]
+            if not re.fullmatch(r"[0-9]{2}:[0-9]{2}:[0-9]{2}", clock):
+                raise ValueError("成交时间应为 HH:MM:SS")
+            clock_time.fromisoformat(clock)
+            quantity = decimal(cells["成交数量"])
+            price = decimal(cells["成交价格"])
+        except (ValueError, ArithmeticError) as exc:
+            raise ParsingError(str(exc), source=source, line=number) from exc
+        business = {"买入": "证券买入", "卖出": "证券卖出",
+                    "转托管": "转托转出"}.get(cells["买卖标志"], cells["买卖标志"])
+        if business.startswith("市卖"):
+            business = "证券卖出"
+        records.append(TradeTime(day, cells["证券代码"], cells["股东代码"],
+                                 cells["委托编号"], business, quantity, price, clock))
+    if not records:
+        raise ParsingError("文件没有成交记录", source=source, line=header_number + 1)
+    return records
 
 
 def find_header(lines: list[str], source: str = "") -> tuple[int, HeaderIndex]:
@@ -170,7 +239,8 @@ def parse_entry(index: HeaderIndex, line: str, number: int, source: str) -> Entr
                  quantity=quantity, amount=values.require(CASH_AMOUNT), serial=values.require(SERIAL),
                  transaction_id=values.require(TRANSACTION_ID),
                  line=number, fees={fee.name: values.require(fee) for fee in FEES}, platform=platform,
-                 trade_amount=amount, trade_price=price, time=time, source=source)
+                 trade_amount=amount, trade_price=price, time=time, source=source,
+                 shareholder_code=values.require(SHAREHOLDER))
 
 
 def parse_entries(content: str, source: str = "") -> list[Entry]:

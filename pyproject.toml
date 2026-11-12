@@ -12,7 +12,11 @@ dependencies = [
 ]
 
 [dependency-groups]
+browser = [
+    "playwright>=1.65.0",
+]
 dev = [
+    "httpx2",
     "pytest>=9.1.1",
     "ruff>=0.16.6",
 ]
@@ -20,9 +24,26 @@ dev = [
 [project.scripts]
 stock-statement = "stock_statement.cli:main"
 
+[project.optional-dependencies]
+ui = [
+    "akshare>=1.20.37",
+    "fastapi>=0.162.4",
+    "python-dotenv>=1.2.4",
+    "uvicorn>=0.54.0",
+]
+
 [build-system]
 requires = ["uv_build>=0.12.8,<0.13.0"]
 build-backend = "uv_build"
 
+[tool.uv.build-backend]
+source-exclude = ["src/stock_statement/static/**"]
+wheel-exclude = ["**/static/**"]
+
 [tool.ruff.lint]
 ignore = ["TRY004"]
+
+[tool.pyright]
+include = ["src", "tests"]
+venvPath = "."
+venv = ".venv"
